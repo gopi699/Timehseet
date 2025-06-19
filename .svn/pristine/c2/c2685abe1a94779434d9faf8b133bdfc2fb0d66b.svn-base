@@ -1,0 +1,27 @@
+
+const hostIP = 'http://52.66.202.211:9636/';
+//const hostIP = 'http://13.233.206.199:9616/';
+// const hostIP = 'https://localhost:7261/';
+
+export const API_URL = hostIP+'api/Login/LoginValidation';
+export const GetClientMaster_URL = hostIP+'api/ClientMaster/GetClientMaster';
+export const GetProjectMaster_URL = hostIP+'api/ProjectMaster/GetProjectMaster';
+export const GetWorkCategory_URL = hostIP+'api/WorkCategoryMaster/GeWorkCategoryMaster';
+export const GetApproverList_URL = hostIP+'api/UserMaster/GetApproverList';
+export const GetInsertTimeSheet_URL = hostIP+'api/Timesheet/InsertTimeSheet';
+export const GetTimesheets_URL = hostIP+'api/Timesheet/GetTimeSheetById';
+export const GetDeleteTimesheet_URL = hostIP+'api/Timesheet/DeleteTimeSheet';
+export const GetRolebased_URL = hostIP+'api/UserMaster/GetRoleBasedMenu';
+export const GetApproveTimesheetList_URL = hostIP+'api/Timesheet/GetApproveTimesheetList';
+export const GetUserList_URL = hostIP+'api/UserMaster/GetUserList';
+export const ApprovalUpdateStatus_URL = hostIP+'api/Timesheet/UpdateStatus';
+export const GetLeaveMaster_URL = hostIP+'api/Leave/GetLeaveMaster';
+export const InsertLeave_URL = hostIP+'api/Leave/InsertLeaveDetails';
+export const UpdateLeave_URL = hostIP+'api/Leave/UpdateLeaveStatus';
+export const GetLeaveList_URL = hostIP+'api/Leave/GetLeaveListById';
+export const GetLeaveListApp_URL = hostIP+'api/Leave/GetApproveLeaveList';
+export const GetStatusMaster_URL = hostIP+'api/Timesheet/GetStatusMaster';
+export const GetExpenseMaster_URL = hostIP+'api/ExpenseMaster/GetExpenseMaster';
+export const InsertReimburse_URL = hostIP+'api/Reimburse/InsertReimburse';
+export const GetReimburse_URL = hostIP+'api/Reimburse/GetReimburseById';
+export const InsertUpload_URL = hostIP+'api/Reimburse/UploadDocuments';

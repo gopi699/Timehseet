@@ -1,0 +1,250 @@
+/* ================================
+   Timesheet Table Styles
+================================= */
+.Sticky-table {
+    width: 100%;
+    max-height: 450px;
+    overflow-y: auto;
+    margin-top: 1px;
+    border-collapse: collapse;
+    table-layout: fixed;
+
+}
+  
+.timesheet-table{
+    width: 100%;
+    max-height: 450px;
+    overflow-y: auto;
+    margin-top: 1px;
+    border-collapse: collapse;
+    //table-layout: fixed;
+
+}
+.timesheet-table th,
+.timesheet-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+  word-wrap: break-word; /* Allows long words to wrap */
+  overflow: hidden;
+}
+.remarks-column {
+    word-break: break-word; /* Ensures long words break */
+    white-space: normal; /* Allows wrapping */
+    overflow-wrap: break-word;
+    max-width: 220px; /* Adjust width as needed */
+}
+
+.timesheet-table th {
+    background-color: #3498DB;
+    font-weight: bold;
+    color: white; /* Dark text for contrast */
+}
+
+.timesheet-table input,
+.timesheet-table select {
+    width: 120%;
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Table Row Hover Effect */
+.timesheet-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Checkbox Styling */
+.timesheet-table input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* ================================
+   Button Styles
+================================= */
+// .button-group {
+//     display: flex;
+//     gap: 5px;
+// }
+
+// button {
+//     padding: 6px 12px;
+//     border-radius: 4px;
+//     cursor: pointer;
+//     border: none;
+//     transition: background 0.3s ease-in-out;
+// }
+
+.approve {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.reject {
+    background-color: #f44336;
+    color: white;
+}
+
+.approve:hover {
+    background-color: #45a049;
+}
+
+.reject:hover {
+    background-color: #e53935;
+}
+
+/* Delete Button */
+.delete-btn {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.delete-btn:hover {
+    color: #c0392b;
+}
+
+.header-linesolv {
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  .border-linesolv {
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+
+  .border-linesolve {
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+
+/* ================================
+   Approval Modal Styles
+================================= */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-content h3 {
+    margin: 0 0 10px;
+}
+
+.modal-content select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Modal Buttons */
+.modal-content button {
+    margin-top: 10px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.3s ease-in-out;
+}
+
+.modal-content button:first-of-type {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.modal-content button:last-of-type {
+    background-color: #f44336;
+    color: white;
+}
+
+.modal-content button:first-of-type:hover {
+    background-color: #45a049;
+}
+
+.modal-content button:last-of-type:hover {
+    background-color: #e53935;
+}
+
+/* ================================
+   No Data Message
+================================= */
+.no-data {
+    text-align: center;
+    font-size: 16px;
+    color: #888;
+    margin-top: 20px;
+}
+
+/* ================================
+   Responsive Styles
+================================= */
+@media (max-width: 768px) {
+    .timesheet-table {
+        font-size: 14px;
+    }
+
+    .timesheet-table th,
+    .timesheet-table td {
+        padding: 6px 8px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .modal {
+        width: 90%;
+    }
+}
+
+
+
+
+
+
+
+
+button.approve {
+    background: green;
+    color: white;
+
+}
+
+button.reject {
+    background: red;
+    color: white;
+}
+
+
+button:disabled {
+    background-color: #ccc !important; /* Grey background */
+    color: #666 !important; /* Dark grey text */
+    cursor: not-allowed !important; /* Show not-allowed cursor */
+    opacity: 0.6 !important; /* Reduce opacity */
+}

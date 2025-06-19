@@ -1,0 +1,102 @@
+<div class="">
+  <form [formGroup]="timesheetForm" (ngSubmit)="onSubmit()">
+
+    <div class=" w-full border border-[#DDDDDD]">
+        <div class="flex">
+          <div
+            class="bg-[#3498DB] text-white table-col w-[80px] p-1 text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center">
+            S.No</div>
+          <div
+            class="bg-[#3498DB] text-white table-col flex-1 p-1 text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center ">
+            Client</div>
+          <div
+            class="bg-[#3498DB] text-white table-col flex-1 p-1 text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  ">
+            Project</div>
+          <div
+            class="bg-[#3498DB] text-white table-col w-[170px] p-1 text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center ">
+            Date</div>
+          <div
+            class="bg-[#3498DB] text-white table-col flex-1 p-1 text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  ">
+            Activity</div>
+          <div
+            class="bg-[#3498DB] text-white table-col w-[100px] p-1 text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  ">
+            Work Hour</div>
+          <div
+            class="bg-[#3498DB] text-white table-col flex-1 p-1 text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  ">
+            Approver</div>
+          <div
+            class="bg-[#3498DB] text-white table-col flex-1 p-1 text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  ">
+            Remarks</div>
+          <div
+            class="bg-[#3498DB] text-white table-col w-[80px] p-1 text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold  flex justify-center items-center  ">
+            Action</div>
+        </div>
+    </div>
+    <div class=" w-full " formArrayName="timesheet_Details">
+      <div class="flex" *ngFor="let entry of timesheetEntries.controls; let i = index" [formGroupName]="i">
+        <div
+          class="table-col w-[80px] p-1 text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex justify-center items-center">
+          {{ i + 1 }}</div>
+        <div
+          class="table-col flex-1 p-1 overflow-hidden text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 ">
+          <select class="w-full h-8 border border-[#DDDDDD] rounded" (change)="Fetch_Project(i)" formControlName="client_Pk_Id">
+            <option value="">--Select--</option>
+            <option *ngFor="let client of clients" [value]="client.id">{{ client.description }}</option>
+          </select> </div>
+        <div
+          class="table-col flex-1 p-1 overflow-hidden text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0  ">
+          <select class="w-full h-8 border border-[#DDDDDD] rounded" formControlName="dep_Pk_Id">
+            <option value="">--Select--</option>
+            <option *ngFor="let project of projects[i]" [value]="project.id">{{ project.description }}
+            </option>
+          </select> </div>
+        <div
+          class="table-col w-[170px] p-1 text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0  ">
+          <!-- <input class="w-full h-8 border border-[#DDDDDD] rounded" type="date" formControlName="date" />  -->
+          <mat-form-field  appearance="outline" class="w-full">
+            <input formControlName="date"  (dateChange)="datechange(i)"  class="w-full top-1 rounded h-8" matInput 
+                   [matDatepicker]="picker" 
+                   [matDatepickerFilter]="myFilter" 
+                   
+                   placeholder="Select Date">
+          
+            <!-- Datepicker Toggle (Icon inside input) -->
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div
+          class="table-col flex-1 p-1 text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 ">
+          <select class="w-full h-8 border border-[#DDDDDD] rounded" formControlName="work_Pk_Id">
+            <option value="">--Select--</option>
+            <option *ngFor="let activity of Activity" [value]="activity.id">{{ activity.description }}
+            </option>
+          </select> </div>
+        <div
+          class="table-col w-[100px] p-1 text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 ">
+          <input class="w-full h-8 border border-[#DDDDDD] rounded text-center" min="0" type="number" formControlName="work_Hour" /> </div>
+        <div
+          class="table-col flex-1 p-1 text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 ">
+          <select class="w-full h-8 border border-[#DDDDDD] rounded" formControlName="approved_By">
+            <option value="">--Select--</option>
+            <option *ngFor="let approver of Approver" [value]="approver.id">{{ approver.description
+              }}
+            </option>
+          </select> </div>
+        <div
+          class="table-col flex-1 p-1 text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 ">
+          <input  class="w-full h-8 border border-[#DDDDDD] rounded" type="text" formControlName="remarks" /> </div>
+        <div
+          class="table-col w-[80px] p-1 text-[5px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex justify-center items-center">
+          <button type="button" class="delete-btn" (click)="deleteRow(i)">✖</button> </div>
+      </div>
+    </div>
+      
+     <div class="button-section">
+      <button type="submit" class="submit-btn">Submit</button>
+      <button type="button" class="add-btn" (click)="addRow()">Add</button>
+    </div>
+  </form>
+
+</div>

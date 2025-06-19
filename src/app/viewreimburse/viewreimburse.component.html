@@ -1,0 +1,119 @@
+<!-- viewform-component.html -->
+<div class="view-reimburse-container">
+    <!-- Search Section -->
+    <div class="search-container">
+      <label for="searchInput" class="search-label">Search:</label>
+      <input id="searchInput" type="text" [(ngModel)]="searchQuery" 
+             (input)="filterReimburse()" placeholder="Search Reimburse..." 
+             class="search-input" />
+      <button *ngIf="searchQuery" class="clear-btn" (click)="clearSearch()">✖</button>
+      <button *ngIf="filteredReimburse.length > 0 && !isLoading" (click)="exportToExcel()" class="download-btn">
+        Download Excel
+      </button>
+    </div>
+  
+    <!-- Table Section -->
+    <div class="static w-full mt-3">
+      <div class="w-full">
+        <div class="grid grid-cols-11 me-[16px]">
+          <div class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] header-line font-bold border-e-0 flex justify-center items-center">
+            S.No
+          </div>
+          <div class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] header-line font-bold border-e-0 flex justify-center items-center">
+            Emp Id
+          </div>
+          <div class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] header-line font-bold border-e-0 flex justify-center items-center">
+            Client
+          </div>
+          <div class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] header-line font-bold border-e-0 flex justify-center items-center">
+            Project
+          </div>
+          <div class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] header-line font-bold border-e-0 flex justify-center items-center">
+            Date
+          </div>
+          <div class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] header-line font-bold border-e-0 flex justify-center items-center">
+            Claim Amount
+          </div>
+          <div class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] header-line font-bold border-e-0 flex justify-center items-center">
+            Expense
+          </div>
+          <div class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] header-line font-bold border-e-0 flex justify-center items-center">
+            Approver
+          </div>
+          <div class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] header-line font-bold border-e-0 flex justify-center items-center">
+            Remarks
+          </div>
+          <div class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] header-line font-bold border-e-0 flex justify-center items-center">
+            Status
+          </div>
+          <div class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] header-line font-bold flex justify-center items-center">
+            Action
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Table Data -->
+    <div class="w-full h-120 overflow-y-scroll">
+      @if(paginatedReimburse.length>0) {
+        <div class="grid grid-cols-11" *ngFor="let entry of paginatedReimburse; let i = index">
+          <div class="border-line p-1 text-[10px] md:text-[12px] lg:text-[14px] flex justify-center items-center">
+            {{ (currentPage - 1) * pageSize + i + 1 }}
+          </div>
+          <div class="border-line p-1 text-[10px] md:text-[12px] lg:text-[14px] flex justify-center items-center">
+            {{entry.EmpId}}
+          </div>
+          <div class="border-line p-1 text-[10px] md:text-[12px] lg:text-[14px] flex items-center">
+            {{entry.Client}}
+          </div>
+          <div class="border-line p-1 text-[10px] md:text-[12px] lg:text-[14px] flex items-center">
+            {{entry.Project}}
+          </div>
+          <div class="border-line p-1 text-[10px] md:text-[12px] lg:text-[14px] flex justify-center items-center">
+            {{entry.Date}}
+          </div>
+          <div class="border-line p-1 text-[10px] md:text-[12px] lg:text-[14px] flex justify-center items-center">
+            {{entry.ClaimAmount}}
+          </div>
+          <div class="border-line p-1 text-[10px] md:text-[12px] lg:text-[14px] flex items-center">
+            {{entry.Expense}}
+          </div>
+          <div class="border-line p-1 text-[10px] md:text-[12px] lg:text-[14px] flex items-center">
+            {{entry.Approver}}
+          </div>
+          <div class="border-line p-1 text-[10px] md:text-[12px] lg:text-[14px] flex items-center remarks-column">
+            {{entry.Remarks}}
+          </div>
+          <div class="border-line p-1 text-[10px] md:text-[12px] lg:text-[14px] flex justify-center items-center" 
+               [ngStyle]="{'color': getStatusColor(entry.Status)}">
+            {{entry.Status}}
+          </div>
+        <div class="border-line p-1 text-[10px] md:text-[12px] lg:text-[14px] flex justify-center items-center">
+  <a (click)="downloadFile(entry.EmpId, entry.rawDate || '')" class="flex gap-2 cursor-pointer">
+    <span class="material-symbols-outlined">download</span>
+  </a>
+</div>
+
+
+        </div>
+      }
+      @else {
+        <div *ngIf="Reimburse.length === 0" class="no-data-container">
+          <p class="no-data-message">No data available.</p>
+        </div>
+      }
+    </div>
+  
+    <!-- Pagination -->
+    <div class="flex p-2 w-full justify-end content-end items-center gap-2" *ngIf="Reimburse.length > pageSize">
+      <button [ngClass]="currentPage === 1?'bg-[#CCCCCC]':'bg-[#007BFF]'" class="p-2 text-white rounded" 
+              (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
+        &lt;
+      </button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button [ngClass]="currentPage >= totalPages?'bg-[#CCCCCC]':'bg-[#007BFF]'" class="p-2 text-white rounded" 
+              (click)="changePage(currentPage + 1)" [disabled]="currentPage >= totalPages">
+        &gt;
+      </button>
+    </div>
+  </div>

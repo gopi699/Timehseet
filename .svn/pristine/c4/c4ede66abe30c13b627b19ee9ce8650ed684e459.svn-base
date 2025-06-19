@@ -1,0 +1,8 @@
+.header-title {
+    text-align: center;
+    color: #3F51B5;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  

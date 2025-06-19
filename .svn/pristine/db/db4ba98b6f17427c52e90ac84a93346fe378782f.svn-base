@@ -1,0 +1,218 @@
+.timesheet-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  margin-top: 2px; /* Adjust margin to move table down */
+  text-align: center;/* Center align text */
+  overflow-y: auto; 
+  table-layout: fixed;
+}
+
+.timesheet-table th,
+.timesheet-table td {
+  padding: 3px;
+  text-align: center; /* Center align table data */
+  border: 1px solid #ddd;
+}
+
+.timesheet-table th {
+  background-color: #3498DB; /* Light Blue */
+  color: white; /* Dark text for contrast */
+  font-weight: bold;
+  font-size: 14px; /* Reduced font size */
+  padding: 3px 6px; /* Reduced padding */
+  height: 45px; /* Adjust header height */
+}
+
+
+.timesheet-table input,
+.timesheet-table select {
+  width: 100%;
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+
+/* Adjust Work Hour input width */
+// .timesheet-table td:nth-child(6) input {
+//   width: 60px; /* Reduced width */
+// }
+
+/* Increase Approver dropdown width */
+// .timesheet-table td:nth-child(7) select {
+//   width: 254px; /* Increased width */
+// }
+
+/* Button Section */
+.button-section {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+/* Delete Button Styles */
+/* Delete Button Styles */
+.delete-cell {
+  text-align: center;
+}
+
+.delete-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;  /* Reduced size */
+  height: 20px; /* Reduced size */
+  font-size: 12px; /* Smaller font */
+  font-weight: bold;
+  cursor: pointer;
+  // display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+}
+
+.delete-btn:hover {
+  background-color: darkred;
+}
+
+.add-btn,
+.view-btn,
+.submit-btn {
+  padding: 5px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-btn {
+  background-color: #369ef4;
+  color: white;
+  border: none;
+}
+
+.view-btn {
+  background-color: #2196F3;
+  color: white;
+  border: none;
+}
+
+.submit-btn {
+  background-color:#4CAF50;
+  color: white;
+  border: none;
+}
+
+.add-btn:hover {
+  background-color:#5191c5;
+}
+
+.view-btn:hover {
+  background-color: #0b7dda;
+}
+
+.submit-btn:hover {
+  background-color: #45a049;
+}
+
+/* Grey line */
+.grey-line {
+  margin: 20px 0;
+  height: 2px;
+  background-color: #ddd;
+}
+
+/* Record Table Styles */
+.record-table-box {
+  margin-top: 30px;
+  background-color: #fafafa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.records-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.records-table th,
+.records-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.records-table th {
+  background-color: #87CEEB; /* Light Blue */
+  color: black;
+  font-weight: bold;
+}
+
+.records-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.records-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.records-table td {
+  word-wrap: break-word;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+
+  .timesheet-table,
+  .records-table {
+    font-size: 14px;
+  }
+
+  .timesheet-table th,
+  .timesheet-table td,
+  .records-table th,
+  .records-table td {
+    padding: 6px 8px;
+  }
+
+  .button-section {
+    flex-direction: column;
+  }
+
+  .add-btn,
+  .view-btn,
+  .submit-btn {
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 10px;
+  }
+}
+
+.table-border,th,td{
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+.table-border{
+  overflow-y: auto; 
+  table-layout: fixed;
+ 
+}
+::ng-deep .mat-datepicker-content .mat-calendar {
+  max-width: 240px;             /* Set the width of the calendar */
+  max-height: 292px;            /* Set the height of the calendar */
+  border-color: #DDDDDD;  /* Border around the calendar */
+  background-color: white;  /* Set the background color */
+  border-radius: 10px;      /* Rounded corners for the calendar */
+}
+.mat-mdc-form-field-bottom-align {
+  display: none !important; /* or any other required styles */
+}
+::ng-deep.mdc-text-field--no-label:not(.mdc-text-field--textarea) .mat-mdc-form-field-input-control.mdc-text-field__input, .mat-mdc-text-field-wrapper .mat-mdc-form-field-input-control {
+  height: auto;
+  font-family: Arial, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}

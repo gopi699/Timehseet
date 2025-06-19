@@ -1,0 +1,14 @@
+::ng-deep .mat-datepicker-content .mat-calendar {
+    max-width: 240px;             /* Set the width of the calendar */
+    max-height: 292px;            /* Set the height of the calendar */
+    border: 1px solid black;  /* Border around the calendar */
+    background-color: white;  /* Set the background color */
+    border-radius: 10px;      /* Rounded corners for the calendar */
+  }
+  
+  .remarks-column {
+    word-break: break-word; /* Ensures long words break */
+    white-space: normal; /* Allows wrapping */
+    overflow-wrap: break-word;
+    max-width: 220px; /* Adjust width as needed */
+  }

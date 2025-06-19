@@ -1,0 +1,132 @@
+<div class="">
+  
+
+  <!-- 🔹 Search Section -->
+  <div class="search-container">
+    <label for="searchInput" class="search-label">Search:</label>
+    <input id="searchInput" type="text" [(ngModel)]="searchQuery" 
+           (input)="filterTimesheets()" placeholder="Search timesheets..." 
+           class="search-input" />
+           <button *ngIf="searchQuery" class="clear-btn" (click)="clearSearch()">✖</button>
+           <button *ngIf="filteredTimesheets.length > 0 && !isLoading" (click)="exportToExcel()" class="download-btn">
+            Download Excel
+          </button>
+  </div>
+
+<!-- 🔹 Button remains at the top -->
+<!-- <div class="download-btn-container " *ngIf="filteredTimesheets.length > 0 && !isLoading">
+ 
+</div> -->
+
+<!-- 🔹 Center No Data Message -->
+
+
+
+<div class="static w-full  border border-[#DDDDDD] ">
+  <div class=" w-full ">
+    <div class="grid grid-cols-11 me-[16px]" >
+    <div  class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  "> S.No</div>
+    <div  class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  "> User Id</div>
+    <div  class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  "> Client</div>
+    <div  class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  "> Project</div>
+    <div  class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  "> Date</div>
+    <div  class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  "> Activity</div>
+    <div  class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  "> Work Hour</div>
+    <div  class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  "> Approver</div>
+    <div  class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  "> Remarks</div>
+    <div  class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  "> Status</div>
+    <div  class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold  flex justify-center items-center  "> Action</div>
+    </div>
+    </div>
+@if(paginatedTimesheets.length>0)
+{
+  
+  <div  class=" w-full h-121 overflow-y-scroll">
+    <div class="grid grid-cols-11" *ngFor="let entry of paginatedTimesheets; let i = index" >
+     
+    <div  class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex justify-center items-center content-center " >{{ (currentPage - 1) * pageSize + i + 1 }}</div>
+    <div  class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex justify-center items-center content-center "> {{entry.UserId}}   </div>
+    <div  class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex  items-center ">  {{ entry.Client }}  </div>
+    <div  class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex  items-center "> {{ entry.Project }}   </div>
+    <div  class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex justify-center items-center ">   {{ entry.Date | date:'dd-MMM-yyyy' }} </div>
+    <div  class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex items-center "> {{ entry.Activity }}    </div>
+    <div  class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex justify-center items-center content-center "> {{ entry.WorkHour }}   </div>
+    <div  class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex items-center ">{{ entry.Approver }}    </div>
+    <div  class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex  items-center remarks-column">{{ entry.Remarks }} </div>
+    <div  class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex justify-center items-center content-center " [ngStyle]="{'color': getStatusColor(entry.Status)}"> {{ entry.Status }}   </div>
+    <div  class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 flex justify-center items-center content-center ">
+      <button *ngIf="entry.Status === 'Pending'" (click)="removeTimesheet(i)" class="bg-red-600 rounded text-white p-1" aria-label="Remove timesheet">
+      Remove
+    </button></div>
+    </div>
+    </div>
+}
+@else
+{
+  <div class="no-data-container" *ngIf="filteredTimesheets.length === 0 && !isLoading">
+    <p class="no-data-message">
+      No matching timesheets found.
+    </p>
+  </div>
+}
+</div>
+
+  <!-- 🔹 Timesheet Table -->
+  <!-- <table class="timesheet-table " *ngIf="filteredTimesheets.length > 0">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>UserId</th>
+        <th>Client</th>
+        <th>Project</th>
+        <th>Date</th>
+        <th>Activity</th>
+        <th>Work Hour</th>
+        <th>Approver</th>
+        <th>Remarks</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody class="  overflow-y-scroll">
+      <tr *ngFor="let entry of paginatedTimesheets; let i = index">
+        <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+        <td>{{entry.UserId}}</td>
+        <td>{{ entry.Client }}</td>
+        <td>{{ entry.Project }}</td>
+        <td>{{ entry.Date | date:'dd-MMM-yyyy' }}</td> 
+        <td>{{ entry.Activity }}</td>
+        <td>{{ entry.WorkHour }}</td>
+        <td>{{ entry.Approver }}</td>
+        <td class="remarks-column">{{ entry.Remarks }}</td>
+        <td [ngStyle]="{'color': getStatusColor(entry.Status)}">{{ entry.Status }}</td>
+
+        <td>
+          <button *ngIf="entry.Status === 'Pending'" (click)="removeTimesheet(i)" class="remove-btn" aria-label="Remove timesheet">
+            Remove
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table> -->
+
+  <!-- 🔹 Pagination Controls -->
+
+  <div class=" flex p-2 w-full justify-end content-end items-center gap-2" *ngIf="filteredTimesheets.length > pageSize">
+    <button [ngClass]="currentPage === 1?'bg-[#CCCCCC]':'bg-[#007BFF]'" class="p-2   text-white rounded" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"><</button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button [ngClass]="currentPage >= totalPages?'bg-[#CCCCCC]':'bg-[#007BFF]'" class="p-2 text-white rounded" (click)="changePage(currentPage + 1)" [disabled]="currentPage >= totalPages">></button>
+  </div>
+
+  <!-- 🔹 No Records Message 
+  <div class="no-data-container" *ngIf="filteredTimesheets.length === 0 && !isLoading">
+    <p class="no-data-message">No matching timesheets found.</p>
+  </div> -->
+  
+  
+
+  <!-- 🔹 Loading Indicator -->
+  <div *ngIf="isLoading" class="loading">
+    <p>Loading...</p>
+  </div>
+</div>

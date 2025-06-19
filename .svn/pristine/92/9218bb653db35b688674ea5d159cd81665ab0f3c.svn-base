@@ -1,0 +1,189 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+import {
+  API_URL, GetApproverList_URL, GetClientMaster_URL, GetDeleteTimesheet_URL, GetProjectMaster_URL, GetInsertTimeSheet_URL,
+  GetRolebased_URL, GetTimesheets_URL, GetWorkCategory_URL, GetApproveTimesheetList_URL, ApprovalUpdateStatus_URL, GetUserList_URL,
+  GetStatusMaster_URL, GetLeaveMaster_URL, InsertLeave_URL, UpdateLeave_URL, GetLeaveList_URL, GetLeaveListApp_URL, GetExpenseMaster_URL,
+  InsertReimburse_URL, GetReimburse_URL, InsertUpload_URL
+} from './const_url'; // Make sure you have the constants 
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DbservicesService {
+  router: any;
+  GetTimesheet(payload: { user_Pk_Id: string | null; }) {
+    const url = `${GetTimesheets_URL}`;
+    return this.APICall(url, payload);
+  }
+
+  private userId: any; // Property to store the user ID
+
+  constructor(private http: HttpClient) { }
+  // Method to set the user ID
+  setUserId(userId: string) {
+    this.userId = userId;
+
+  }
+
+  // Method to get the user ID (if needed)
+  getUserId(): string {
+    return this.userId;
+  }
+
+  checkUserAvailability(credentials: any): Observable<any> {
+    const url = `${API_URL}/checkUser`;
+    return this.APICall(url, credentials);
+  }
+
+  login(credentials: any): Observable<any> {
+    const url = `${API_URL}`;
+    return this.APICall(url, credentials);
+  }
+
+  // dbservices.service.ts
+  getClientMaster(payload: any): Observable<any> {
+    const url = `${GetClientMaster_URL}`;
+    return this.APICall(url, payload,);
+  }
+
+  GetProjectMaster(payload: any): Observable<any> {
+    const url = `${GetProjectMaster_URL}`;
+    return this.APICall(url, payload);
+  }
+
+
+  GetWorkCategory(payload: any): Observable<any> {
+    const url = `${GetWorkCategory_URL}`;
+    return this.APICall(url, payload);
+  }
+
+  GetApproverList(payload: any): Observable<any> {
+    const url = `${GetApproverList_URL}`;
+    return this.APICall(url, payload);
+  }
+  GetUserList(payload: any): Observable<any> {
+    const url = `${GetUserList_URL}`;
+    return this.APICall(url, payload);
+  }
+  GetInsertTimeSheet(payload: any): Observable<any> {
+    const url = `${GetInsertTimeSheet_URL}`;
+    return this.APICall(url, payload);
+  }
+
+
+  GetTimesheets(payload: any): Observable<any> {
+    const url = `${GetTimesheets_URL}`;
+    return this.APICall(url, payload);
+  }
+  // GetTimesheets(payload: { user_Pk_Id: string | null }): Observable<any> {
+  //   var UserID = '' + sessionStorage.getItem('userId');
+  //   const url = `${GetTimesheets_URL}`;
+  //   const headers = new HttpHeaders({
+  //     UserID
+  //   });
+  //   return this.http.post<any>(url, payload, { headers });
+
+  // }
+  // GetDeleteTimesheet(id: number): Observable<any> {
+  //   const url = `${GetDeleteTimesheet_URL}`;
+  //   var UserID: any = sessionStorage.getItem('userId');
+
+  //   const headers = new HttpHeaders({
+  //     UserID
+  //   });
+
+  //   const payload = { pk_Timesheet_Details_Id: id }; // Sending ID for deletion
+
+  //   return this.http.post<any>(url, payload, { headers });
+  // }
+  GetDeleteTimesheet(id: number): Observable<any> {
+    const url = `${GetDeleteTimesheet_URL}`;
+    const payload = { pk_Timesheet_Details_Id: id };
+    return this.APICall(url, payload);
+  }
+
+  GetRoleBasedMenu(roleId: number): Observable<any> {
+    const url = `${GetRolebased_URL}`;
+    const payload = { roleId };
+    return this.APICall(url, payload);
+  }
+
+  GetApproveTimesheetList(payload: any): Observable<any> {
+    const url = `${GetApproveTimesheetList_URL}`;
+    return this.APICall(url, payload,);
+  }
+
+
+  ApprovalUpdateStatus(payload: any): Observable<any> {
+    const url = `${ApprovalUpdateStatus_URL}`;
+
+    return this.APICall(url, payload,);
+  }
+
+  getStatusMaster(payload: any): Observable<any> {
+    const url = `${GetStatusMaster_URL}`;
+    return this.APICall(url, payload,);
+  }
+
+  getLeaveMaster(payload: any): Observable<any> {
+    const url = `${GetLeaveMaster_URL}`;
+    return this.APICall(url, payload,);
+  }
+
+  InsertLeave(payload: any): Observable<any> {
+    const url = `${InsertLeave_URL}`;
+    return this.APICall(url, payload);
+  }
+
+  getLeaveList(payload: any): Observable<any> {
+    const url = `${GetLeaveList_URL}`;
+    return this.APICall(url, payload);
+  }
+
+  getLeaveListApp(payload: any): Observable<any> {
+    const url = `${GetLeaveListApp_URL}`;
+    return this.APICall(url, payload);
+  }
+
+  LeaveAppUpdateStatus(payload: any): Observable<any> {
+    const url = `${UpdateLeave_URL}`;
+
+    return this.APICall(url, payload,);
+  }
+
+  getExpenseMaster(payload: any): Observable<any> {
+    const url = `${GetExpenseMaster_URL}`;
+
+    return this.APICall(url, payload,);
+  }
+
+  InsertReimburse(payload: any): Observable<any> {
+    const url = `${InsertReimburse_URL}`;
+
+    return this.APICall(url, payload,);
+  }
+
+
+  GetReimburse(payload: any): Observable<any> {
+    const url = `${GetReimburse_URL}`;
+
+    return this.APICall(url, payload,);
+  }
+
+  InsertReimburseUpload(payload: any): Observable<any> {
+    const url = `${InsertUpload_URL}`;
+
+    return this.APICall(url, payload,);
+  }
+
+  APICall(url: any, payload: any) {
+   return this.http.post<any>(url, payload);
+  }
+
+
+}
+
+

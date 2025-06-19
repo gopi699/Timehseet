@@ -1,0 +1,135 @@
+<form [formGroup]="ApplyLeave" *ngIf="roleId !== '1'">
+    <div class="flex border border-[#DDDDDD] p-3 gap-10 w-full h-25 bg-white mt-3">
+        <div
+            class="w-full  text-[15px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[12px] 2xl:text-[15px]">
+            <label class="w-full" header-linesolvedse for="">From Date</label>
+            <input class="w-full header-linesolvedse rounded h-10" type="date" formControlName="from_Date">
+
+            <!-- <mat-form-field appearance="outline" class="w-full">
+                    <input class="w-full top-1 border border-[#DDDDDD] rounded h-8" matInput 
+                           [matDatepicker]="picker" 
+                           [matDatepickerFilter]="myFilter" 
+                           formControlName="from_Date" 
+                           placeholder="Select Date">
+                  
+                     Datepicker Toggle (Icon inside input) 
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field> -->
+        </div>
+        <div
+            class="w-full text-[15px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[12px] 2xl:text-[15px]">
+            <label class="w-full " header-linesolvedse for="">To Date</label>
+            <input class="w-full header-linesolvedse rounded h-10" type="date" formControlName="to_Date">
+        </div>
+        <div
+            class="w-full text-[15px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[12px] 2xl:text-[15px]">
+            <label class="w-full" header-linesolvedse for="">Leave Type</label>
+            <select class="w-full header-linesolvedse rounded h-10" formControlName="leave_Pk_Id">
+                <option [value]='null'>--Select--</option>
+                <option *ngFor="let leave of Leave" [value]="leave.id">{{ leave.description }}
+                </option>
+            </select>
+        </div>
+        <div
+            class="w-full text-[15px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[12px] 2xl:text-[15px]">
+            <label class="w-full" header-linesolvedse for="">Reason</label>
+            <input class="w-full header-linesolvedse rounded h-10" formControlName="reason" />
+        </div>
+        <div
+            class="w-full text-[15px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[12px] 2xl:text-[15px]">
+            <label class="w-full" header-linesolvedse for="">Approver</label>
+            <select class="w-full header-linesolvedse rounded h-10" formControlName="approved_By">
+                <option [value]='null'>--Select--</option>
+                <option *ngFor="let approver of Approver" [value]="approver.id">{{ approver.description }}
+            </select>
+        </div>
+        <div class="flex justify-center content-center items-center">
+            <button class="bg-green-700 text-white p-2 rounded" type="button" (click)="onApply()">Apply</button>
+        </div>
+    </div>
+</form>
+
+<div class="static w-full border border-[#DDDDDD] mt-3">
+    
+    <div class=" w-full ">
+        <div class="grid grid-cols-8 me-[16px]">
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border-linesolvedse font-bold border-e-0 flex justify-center items-center  ">
+                SNo</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border-linesolvedse font-bold border-e-0 flex justify-center items-center  ">
+                Emp Id</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border-linesolvedse font-bold border-e-0 flex justify-center items-center  ">
+                From Date</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border-linesolvedse font-bold border-e-0 flex justify-center items-center  ">
+                To Date</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border-linesolvedse font-bold border-e-0 flex justify-center items-center  ">
+                Leave Type</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border-linesolvedse font-bold border-e-0 flex justify-center items-center  ">
+                Reason</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border-linesolvedse font-bold border-e-0 flex justify-center items-center  ">
+                Approver</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border-linesolvedse font-bold border-e-0 flex justify-center items-center  ">
+                Status </div>
+        </div>
+    </div>
+    
+    <div class=" w-full h-100 overflow-y-scroll">
+        @if(paginatedLeave.length>0){
+        <div class="grid grid-cols-8"  *ngFor="let entry of paginatedLeave; let i = index"> 
+            <div
+                class="p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-linesolvedsed border-t-0 border-e-0 flex justify-center items-center content-center ">
+                {{ (currentPage - 1) * pageSize + i + 1 }}
+            </div>
+            <div
+                class="p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-linesolvedsed border-t-0 border-e-0 flex justify-center items-center content-center ">
+                {{entry.EmpId}}
+            </div>
+            <div
+                class="p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-linesolvedsed border-t-0 border-e-0 flex justify-center items-center  ">
+                {{entry.FromDate}}
+            </div>
+            <div
+                class="p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-linesolvedsed border-t-0 border-e-0 flex justify-center  items-center  ">
+                {{entry.ToDate}}
+            </div>
+            <div
+                class="p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-linesolvedsed border-t-0 border-e-0 flex  items-center   ">
+                {{entry.LeaveType}}
+            </div>
+            <div
+                class="p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-linesolvedsed border-t-0 border-e-0 flex items-center remarks-column">
+                {{entry.Reason}}
+            </div>
+            <div
+                class="p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-linesolvedsed border-t-0 border-e-0 flex items-center content-center ">
+                {{entry.Approver}}
+            </div>
+            <div
+                class="p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-linesolvedsed border-t-0 border-e-0 flex justify-center items-center content-center "[ngStyle]="{'color': getStatusColor(entry.Status)}">
+                {{entry.Status}}
+            </div>
+
+        </div>
+    }
+    @else {
+        <div *ngIf="Leavelist.length === 0" class="mt-3 flex justify-center text-gray-400">
+            No data available.
+          </div>
+    }
+    </div>
+</div>
+
+  <div class=" flex p-2 w-full justify-end content-end items-center gap-2" *ngIf="Leavelist.length > pageSize">
+    <button [ngClass]="currentPage === 1?'bg-[#CCCCCC]':'bg-[#007BFF]'" class="p-2   text-white rounded" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"><</button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button [ngClass]="currentPage >= totalPages?'bg-[#CCCCCC]':'bg-[#007BFF]'" class="p-2 text-white rounded" (click)="changePage(currentPage + 1)" [disabled]="currentPage >= totalPages">></button>
+  </div>

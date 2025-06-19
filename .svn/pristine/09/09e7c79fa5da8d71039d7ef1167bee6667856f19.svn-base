@@ -1,0 +1,11 @@
+<div class="overlay" *ngIf="isVisible">
+    <div class="modal">
+      <h3>Confirm Deletion</h3>
+      <p>Are you sure you want to delete this timesheet?</p>
+      <div class="button-group">
+        <button class="btn cancel" (click)="onCancel()">Cancel</button>
+        <button class="btn delete" (click)="onConfirm()">Delete</button>
+      </div>
+    </div>
+  </div>
+  

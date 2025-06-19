@@ -1,0 +1,8 @@
+#add files 
+.postcssrc.json
+angular.json
+package.json
+style.css
+
+after cmd npm i
+

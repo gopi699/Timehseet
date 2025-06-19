@@ -1,0 +1,91 @@
+<div class="flex py-1 items-center bg-[#38a356] sticky top-0">
+  <!-- Left: Menu Toggle Button -->
+  <button class="w-10 h-[40px] text-white bg-amber-950" (click)="toggleMenu()">
+    <span class="material-symbols-outlined" *ngIf="!isMenuOpen">menu</span>
+    <!-- <span *ngIf="!isMenuOpen">☰</span> Menu icon -->
+    <!-- <span *ngIf="isMenuOpen">✖</span> Close icon -->
+    <span class="material-symbols-outlined" *ngIf="isMenuOpen">close</span>
+  </button>
+<!-- Wrap the image in a flex container if alignment is needed -->
+<div class="flex justify-end">
+  <a [routerLink]="['/dashboard']">
+  <img class="home-logo w-8 p-2" src="assets/images/home-button (3).png" alt="Home Logo" />
+</a>
+
+
+</div>
+
+
+
+  <!-- Center: SPR Logo and Page Title -->
+  <div class="flex justify-left flex-grow">
+    <!-- <div class="logo h-[40px] w-[10%]">
+      <img src="assets/images/spr consultant.jpg" alt="Company Logo" class="h-[40px] w-full" />
+    </div> -->
+    <div class="flex justify-center items-center w-full">
+      <h2 class="text-white text-2xl font-bold w-auto text-center">{{ headerTitle }}</h2>
+    </div>
+
+
+  </div>
+
+  <!-- Right: User Dropdown -->
+  <div class="header-right flex items-center ml-4">
+    <div class="user-dropdown" (click)="toggleUserDropdown($event)">
+      <label class="text-white" for="">{{UserName}}</label>
+      <span class="user-icon">👤</span>
+      <div class="dropdown-content" *ngIf="isUserDropdownOpen">
+        <a href="#" (click)="logout()"><span>🚪</span> Log Out</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="flex w-auto h-full ">
+  <div class="">
+
+    <nav class="sidebar h-full flex flex-0 sticky top-10" [class.open]="isMenuOpen">
+
+      <div class=" w-full h-[91vh] flex flex-col justify-between">
+        <ul class="!w-full h-full ">
+          <ng-container *ngFor="let item of menuList; let i = index">
+            <li>
+
+              <!-- <a *ngIf="!item.submenu" [routerLink]="item.route">
+            <span>{{ item.icon }}</span>
+            {{ item.title }}
+          </a> -->
+              <a class="w-full flex justify-between" *ngIf="item.submenu" (click)="toggleSubMenu(i)">
+                <span class=" flex gap-2"> <span class="material-symbols-outlined">{{ item.icon }}</span> {{ item.title
+                  }}</span>
+                <span class="arrow ">▼</span>
+              </a>
+              <ul class="submenu" *ngIf="item.submenu && openSubMenuIndex === i">
+                <li *ngFor="let subItem of item.submenu">
+                  <a [routerLink]="subItem.route">
+                    <span class="material-symbols-outlined" style="padding-right: 10px;">{{ subItem.icon }}</span> {{
+                    subItem.title }}
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ng-container>
+
+        </ul>
+        <img class="flex flex-row justify-end w-full" src="assets/images/spr consultant.jpg" alt="Company Logo" />
+      </div>
+      <!-- <div class="logo">
+        <img class="relative top-130 right-10 w-full"  src="assets/images/spr consultant.jpg" alt="Company Logo"  />
+      </div> -->
+    </nav>
+
+  </div>
+  <div class="h-full w-full overflow-y-auto">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<footer class="flex justify-center items-center">
+  <p class="text-white">&copy; 2025 SPR Consultech</p>
+</footer>

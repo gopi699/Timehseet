@@ -1,0 +1,106 @@
+<div class="">
+    <form [formGroup]="reimburse" (ngSubmit)="onSubmit()">
+  
+      <div class=" w-full">
+          <div class="flex">
+            <div
+              class="bg-[#3498DB] text-white table-col w-[80px] p-1 text-[11px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  header-linese font-bold border-e-0 flex justify-center items-center">
+              S.No</div>
+            <div
+              class="bg-[#3498DB] text-white table-col flex-1 p-1 text-[11px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  header-linese font-bold border-e-0 flex justify-center items-center ">
+              Client</div>
+            <div
+              class="bg-[#3498DB] text-white table-col flex-1 p-1 text-[11px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  header-linese font-bold border-e-0 flex justify-center items-center  ">
+              Project</div>
+            <div
+              class="bg-[#3498DB] text-white table-col w-[150px] p-1 text-[11px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  header-linese font-bold border-e-0 flex justify-center items-center ">
+              Date</div>
+            <div
+              class="bg-[#3498DB] text-white table-col w-[110px] p-1 text-[11px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  header-linese font-bold border-e-0 flex justify-center items-center  ">
+              Claim Amount</div>
+            <div
+              class="bg-[#3498DB] text-white table-col flex-1 p-1 text-[11px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  header-linese font-bold border-e-0 flex justify-center items-center  ">
+              Expense Head</div>
+            <div
+              class="bg-[#3498DB] text-white table-col w-[70px] p-1 text-[11px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  header-linese font-bold border-e-0 flex justify-center items-center  ">
+              Kms</div>
+              <div
+              class="bg-[#3498DB] text-white table-col flex-1 p-1 text-[11px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  header-linese font-bold border-e-0 flex justify-center items-center  ">
+              Approver</div>
+            <div
+              class="bg-[#3498DB] text-white table-col flex-1 p-1 text-[11px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  header-linese font-bold border-e-0 flex justify-center items-center  ">
+              Remarks</div>
+              <div
+              class="bg-[#3498DB] text-white table-col flex-1 p-1 text-[11px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  header-linese font-bold border-e-0 flex justify-center items-center  ">
+              File</div>
+              <div
+              class="bg-[#3498DB] text-white table-col w-[50px] p-1 text-[11px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  header-linese font-bold border-e-0 flex justify-center items-center  ">
+              Action</div>
+
+          </div>
+      </div>
+      <div class=" w-full " formArrayName="reimburse_Details">
+        <div class="flex" *ngFor="let entry of reimburseEntries.controls; let i = index" [formGroupName]="i">
+          <div
+            class="table-col w-[80px] border-linese p-1 text-[14px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border-t-0 border-e-0 flex justify-center items-center">
+            {{ i + 1 }}</div>
+          <div
+            class="table-col flex-1 border-linese p-1 overflow-hidden text-[14px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px] border-t-0 border-e-0 ">
+            <select class="w-full h-8 border border-[#DDDDDD] rounded" (change)="Fetch_Project(i)" formControlName="client_Pk_Id">
+              <option value="">--Select--</option>
+              <option *ngFor="let client of clients" [value]="client.id">{{ client.description }}</option>
+            </select> </div>
+          <div
+            class="table-col flex-1 border-linese p-1 overflow-hidden text-[14px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border-t-0 border-e-0  ">
+            <select class="w-full h-8 border border-[#DDDDDD] rounded" formControlName="dep_Pk_Id">
+              <option value="">--Select--</option>
+              <option *ngFor="let project of projects[i]"   [value]="project.id">{{ project.description }}
+              </option>
+            </select> </div>
+          <div
+            class="table-col w-[150px] border-linese p-1 text-[14px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border-t-0 border-e-0  ">
+            <input class="w-full h-8 border border-[#DDDDDD] rounded" type="date" formControlName="date" />  
+           
+          </div>
+          <div
+            class="table-col w-[110px] border-linese  p-1 text-[14px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border-t-0 border-e-0  ">
+            <input class="w-full h-8 border border-[#DDDDDD] rounded text-center" type="number" formControlName="claim_Amount" />  
+           
+          </div>
+          <div
+            class="table-col flex-1 border-linese p-1 text-[14px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border-t-0 border-e-0 ">
+            <select class="w-full h-8 border border-[#DDDDDD] rounded" formControlName="expense_Pk_Id">
+              <option value="">--Select--</option>
+              <option *ngFor="let Expense of Expense" [value]="Expense.id">{{ Expense.description }}
+              </option>
+            </select> </div>
+          <div
+            class="table-col w-[70px] border-linese p-1 text-[14px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border-t-0 border-e-0 ">
+            <input class="w-full h-8 border border-[#DDDDDD] rounded text-center" type="number" formControlName="kms" /> </div>
+          <div
+            class="table-col flex-1 border-linese p-1 text-[14px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border-t-0 border-e-0 ">
+            <select class="w-full h-8 border border-[#DDDDDD] rounded" formControlName="approver">
+              <option value="">--Select--</option>
+              <option *ngFor="let approver of Approver" [value]="approver.id">{{ approver.description}}
+              </option>
+            </select> </div>
+          <div
+            class="table-col flex-1 border-linese p-1 text-[14px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border-t-0 border-e-0 ">
+            <input  class="w-full h-8 border border-[#DDDDDD] rounded" type="text" formControlName="remarks" /> </div>
+            <div
+            class="table-col flex-1 border-linese p-1 text-[14px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px]  border-t-0 border-e-0 ">
+            <input  class="w-full h-8 border border-[#DDDDDD] rounded" type="file" formControlName="files" (change)="onFileSelected($event,i)"/> </div>
+          <div
+            class="table-col w-[50px] border-linese p-1 text-[14px] xs:text-[3px] sm:text-[3px] lg:text[8px] md:text-[7px] xl:text-[13px] 2xl:text-[15px] border-t-0 border-e-0 flex justify-center items-center">
+            <button type="button" class="delete-btn" (click)="deleteRow(i)" style="color: white;">✖</button>
+ </div>
+        </div> 
+      </div>
+        
+       <div class="flex justify-center mt-5 mb-1">
+        <button type="submit" class="bg-green-600 text-white w-20 h-8 p-1 rounded cursor-pointer ml-2 hover:bg-green-800">Submit</button>
+        <button type="button" class="bg-blue-500 text-white w-14 h-8 p-1 rounded cursor-pointer ml-3 hover:bg-blue-800" (click)="addRow()">Add</button>
+      </div>
+    </form>
+  
+  </div>

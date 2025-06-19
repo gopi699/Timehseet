@@ -1,0 +1,192 @@
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+      display: none;
+  }
+ /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+}
+}
+/* 🔹 Keep the download button at the top-right */
+.download-btn-container {
+  position: absolute;
+  top: 65px;
+  right: 20px;
+  z-index: 1000;
+}
+
+/* 🔹 Button styling */
+.download-btn {
+  background-color: #0f6516c4;
+  color: white;
+  padding:5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.download-btn:hover {
+  background-color:#2b282852;
+}
+
+.clear-btn {
+
+  margin-left: -32px;
+  
+}
+
+
+
+.search-container {
+  display: flex;
+  align-items: center; /* Ensures vertical alignment */
+  justify-content: flex-start; /* Aligns items at the start */
+  gap: 10px; /* Adds space between label and input */
+  margin-bottom: 10px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.search-label {
+  font-weight: bold;
+  white-space: nowrap; /* Prevents label from moving to a new line */
+}
+
+.search-input {
+  //flex-grow: 1; /* Expands input to take available space */
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-width: 500px; /* Ensures input doesn't get too wide */
+}
+
+.remarks-column {
+  word-break: break-word; /* Ensures long words break */
+  white-space: normal; /* Allows wrapping */
+  overflow-wrap: break-word;
+  max-width: 220px; /* Adjust width as needed */
+}
+.timesheet-table th,
+.timesheet-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+  word-wrap: break-word; /* Allows long words to wrap */
+  overflow: hidden;
+}
+
+.timesheet-table th {
+  background-color: #3498db;
+  color: white;
+  font-weight: bold;
+}
+
+.timesheet-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.timesheet-table tr:hover {
+  background-color: #e1e1e1;
+}
+
+
+
+.no-timesheets {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #7f8c8d;
+}
+
+.remove-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: #c82333;
+  }
+}
+
+/* 🔹 Center the "No matching timesheets found" message */
+.no-data-container {
+  display: flex;
+  justify-content: flex-start; /* Align content to the left */
+  align-items: center;
+  height: 70vh;
+  width: 100%;
+  padding-left: 500px; /* Add some left padding if needed */
+}
+
+.no-data-message {
+  font-size: 18px;
+  font-weight: bold;
+  color: red;
+  text-align: left; /* Ensure text aligns to the left */
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.border-line{
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+.header-line{
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .table-container {
+    width: 90%;
+    max-width: 900px;
+  }
+}
+
+@media (max-width: 768px) {
+  .table-container {
+    width: 95%;
+    max-width: 750px;
+  }
+  .timesheet-table {
+    font-size: 12px;
+    table-layout: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .timesheet-table {
+    font-size: 10px;
+    max-height: 350px;
+  }
+}

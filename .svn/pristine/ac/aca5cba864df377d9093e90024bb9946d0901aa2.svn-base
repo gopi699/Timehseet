@@ -1,0 +1,41 @@
+import {
+  MAT_INPUT_CONFIG,
+  MAT_INPUT_VALUE_ACCESSOR,
+  MatInput,
+  MatInputModule,
+  getMatInputUnsupportedTypeError
+} from "./chunk-3BYJHL32.js";
+import {
+  MatError,
+  MatFormField,
+  MatHint,
+  MatLabel,
+  MatPrefix,
+  MatSuffix
+} from "./chunk-I67D4SU2.js";
+import "./chunk-WVA5B3FC.js";
+import "./chunk-UUIWE6VP.js";
+import "./chunk-C47YKYNL.js";
+import "./chunk-LHWSQZPN.js";
+import "./chunk-VI5ZVICC.js";
+import "./chunk-2NFUOKJW.js";
+import "./chunk-ZDZ5W27B.js";
+import "./chunk-YMY6SBSR.js";
+import "./chunk-XONN3WZP.js";
+import "./chunk-5OPE3T2R.js";
+import "./chunk-4N4GOYJH.js";
+import "./chunk-FHTVLBLO.js";
+import "./chunk-EIB7IA3J.js";
+export {
+  MAT_INPUT_CONFIG,
+  MAT_INPUT_VALUE_ACCESSOR,
+  MatError,
+  MatFormField,
+  MatHint,
+  MatInput,
+  MatInputModule,
+  MatLabel,
+  MatPrefix,
+  MatSuffix,
+  getMatInputUnsupportedTypeError
+};

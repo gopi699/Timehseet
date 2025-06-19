@@ -1,0 +1,309 @@
+header {
+  background-color: #3E8E41; /* Green header */
+  color: #FFFFFF;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+
+  .logo img {
+    height: 35px; /* Adjust logo size */
+   // width: 50px;
+  }
+
+
+  .header-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+
+
+  .header-right {
+    text-align: right;
+    font-size: 15px;
+
+    .welcome-message,
+    .mobile-number {
+      font-weight: bold;
+    }
+
+    .user-dropdown {
+      cursor: pointer;
+    }
+  }
+}
+
+  
+.menu-toggle {
+  position: absolute; /* Position the button absolutely */
+  left: 5px; /* Adjust this value to move the button a little more to the left */
+  top: 50%; /* Vertically center the button */
+  transform: translateY(-50%); /* Fine-tune vertical alignment */
+  padding-left: 10px;
+  background-color: transparent; /* Make background transparent */
+  color: white; /* Ensure icon color is white */
+  border: none;
+  padding: 0; /* Remove padding to fit header height */
+  cursor: pointer;
+  font-size: 20px; /* Adjust font size for visibility */
+  height: 45px; /* Match the height of the header */
+  line-height: 45px; /* Center icon vertically */
+}
+
+
+  
+  .user-dropdown {
+    position: absolute; /* Position the user icon absolutely */
+    right: 10px; /* Align to the right */
+    top: 0; /* Align to the top */
+    cursor: pointer;
+  }
+  
+  .user-icon {
+    font-size: 27px;
+    //top: 30px; /* Adjust icon size for visibility */
+  }
+  
+  .dropdown-content {
+    display: none; /* Hide dropdown by default */
+    font-size: 11px;
+    position: absolute; /* Position dropdown */
+    right: 0; /* Align to the right */
+    background-color: #FFFFFF; /* White background for dropdown */
+    min-width: 80px; /* Minimum width for dropdown */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Shadow for dropdown */
+    z-index: 1; /* Ensure dropdown is above other elements */
+  }
+  
+  .user-dropdown:hover .dropdown-content,
+  .user-dropdown .dropdown-content {
+    display: block; /* Show dropdown when user icon is clicked */
+  }
+  
+  .dropdown-content a {
+    color: #333333; /* Dark Gray text color for dropdown items */
+    padding: 6px; /* Padding for dropdown items */
+    text-decoration: none; /* Remove underline */
+    display: block; /* Make dropdown items block elements */
+  }
+  
+  .dropdown-content a:hover {
+    background-color: #E0E0E0; /* Light Gray on hover */
+  }
+  
+  // General styles for the header, sidebar, and content layout
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column; // Stack header, main content, and footer vertically
+  min-height: 100vh; // Ensure the layout takes up the full viewport height
+  background-color: #F5F5F5; // Light Gray background
+}
+
+// Header styles
+header {
+  background-color: #3E8E41;
+  color: #FFFFFF;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+
+  // .logo img {
+  //   height: 35px;
+  // }
+
+  .header-title {
+    flex-grow: 1; 
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200%; // Ensure it takes up full height
+  }
+  
+  h2 {
+    font-size: 100px;
+}
+  
+
+  .header-right {
+    text-align: right;
+    font-size: 15px;
+
+    .welcome-message,
+    .mobile-number {
+      font-weight: bold;
+    }
+
+    .user-dropdown {
+      cursor: pointer;
+    }
+  }
+}
+
+// Menu toggle button
+.menu-toggle {
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding-left: 10px;
+  background-color: transparent;
+  color: white;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 20px;
+  height: 45px;
+  line-height: 45px;
+}
+
+// Sidebar styles
+.sidebar {
+  width: 0;
+  background-color: #FFFFFF;
+  transition: width 0.3s;
+  // height: auto;
+  //height: calc(100vh - 60px);
+  overflow: hidden;
+}
+
+.sidebar.open {
+  width: 200px;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 10px 0;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #333333;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  position: relative;
+}
+
+.arrow {
+  margin-left: 20px;
+  font-size: 12px;
+}
+
+.submenu {
+  list-style-type: none;
+  padding-left: 15px;
+  display: none;
+  background-color: #F0F0F0;
+}
+
+.submenu-item {
+  padding: 5px 10px;
+  color: #b61010;
+}
+
+.submenu-item:hover {
+  background-color: #E0E0E0;
+}
+
+.sidebar.open .submenu {
+  display: block;
+}
+
+
+// Main content styles
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 10px;
+  flex-grow: 1;
+  padding: 20px;
+  margin-left: 0;
+  transition: margin-left 0.3s;
+  width: 100%; // Ensure it fills the full width on larger screens
+  
+  // Center the content for tablet screens
+  @media (min-width: 768px) and (max-width: 1024px) {
+    width: 80%; // Limit the width to 80% of the viewport
+    margin-left: auto;  // Center it horizontally
+    margin-right: auto; // Center it horizontally
+  }
+}
+
+// Footer styles
+footer {
+  background-color: #409558;
+  color: #FFFFFF;
+  height: 27px;
+  text-align: center;
+  width: 100%;
+  padding: 2px;
+  position: relative; /* Keep it in the normal document flow */
+  line-height: 17px;
+  margin-top: -1px; /* Move it higher */
+}
+
+// Mobile responsiveness for layout
+@media (max-width: 768px) {
+  .menu-toggle {
+    font-size: 18px;
+  }
+
+  header {
+    height: 50px;
+    padding: 0 10px;
+  }
+
+  .sidebar {
+    width: 0;
+  }
+
+  .sidebar.open {
+    width: 100%;
+  }
+
+  main {
+    padding: 10px;
+  }
+}
+
+// Smallest screens (mobile portrait)
+@media (max-width: 480px) {
+  header {
+    height: 60px;
+    padding: 0 10px;
+  }
+
+  footer {
+    height: 30px;
+  }
+
+  .sidebar.open {
+    width: 100%;
+  }
+
+  .submenu {
+    padding-left: 10px;
+  }
+}

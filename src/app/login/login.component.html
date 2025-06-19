@@ -1,0 +1,145 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"> -->
+
+<!-- <style>
+        
+        /* body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('assets/images/downlo.jpg') no-repeat center center/cover;
+} */
+
+.login-box {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+}
+
+        .logo {
+            height: 90px;
+            width: 150px;
+            margin: 0 auto 15px auto; /* Centering the logo */
+        }
+
+        .logo img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+        }
+
+        h3 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        label {
+            font-size: 1rem;
+            color: #333;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            text-align: left;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            margin-bottom: 20px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            font-size: 1rem;
+            border-radius: 4px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        #password-input {
+            padding-right: 30px;
+        }
+
+        #show-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    </style> -->
+
+<!-- </head> -->
+
+<div class="full-screen-bg h-[100vh] bg-amber-400 bg-[url('assets/images/clock.jpg')] bg-no-repeat bg-cover bg-center min-h-screen flex justify-end items-center pr-40">
+
+
+
+    <form action="">
+        <div class="m-5 rounded-2xl bg-white w-[350px] pb-6 px-6 pt-4 shadow-2xl card border shadow-white md:ml-[40%] lg:ml-[40%] xl:ml-[35%] 2xl:ml-[35%]"
+
+            [formGroup]="LoginForm">
+            <div class="w-full  h-30 flex justify-center content-center">
+            <img src="assets/images/spr consultant.jpg" alt="Company Logo">
+        </div>
+            <!-- ✅ SPR Logo Added Here -->
+            <div>
+                <p style="color: red;"> {{userNotFound?'*Incorrect UserName or Password': '&nbsp;'}}</p>
+
+                <div
+                    class="w-full mt-3 rounded border-transparent  h-auto p-2 flex flex-col gap-2">
+                    <label for="username">Username</label>
+                    <input class=" h-10 bg-[#E8F0FE] p-2" type="text" id="username" formControlName="user_Id"
+                        placeholder="Enter Username">
+                    <!-- <div *ngIf="userNotFound" style="color: red;">User ID is not found</div> -->
+                </div>
+
+                <div class="w-full h-auto p-2 rounded border-transparent  flex flex-col gap-2">
+                    <label for="password">Password</label>
+                    <input class="h-10  bg-[#E8F0FE] p-2" [type]="changetype ? 'password' : 'text'" id="password" formControlName="password"
+                        placeholder="Enter Password">
+                    <i id="show-password" class="fa" [class.fa-eye]="Visible" [class.fa-eye-slash]="!Visible"
+                        (click)="press()"
+                        style="position: absolute; right: 10px; top: 45%; transform: translateY(-50%); cursor: pointer;"></i>
+
+                    <div *ngIf="passwordIncorrect" style="color: red;">Username found but the password is incorrect
+                    </div>
+                </div>
+               
+                <div  class="w-full flex justify-center content-center items-center h-auto p-2 ">
+                    <button type="submit"  class=" bg-[#4CAF50] w-full p-2 mt-5 text-white rounded-2xl "
+                        [disabled]="!LoginForm.valid" (click)="onSubmit()">Login</button>
+                </div>
+            </div>
+            <p class="cursor-pointer text-blue-600" (click)="_forgotPasswordpopup()"> Forgot Password</p>
+        </div>
+    </form>
+</div>
+
+<!-- </html> -->

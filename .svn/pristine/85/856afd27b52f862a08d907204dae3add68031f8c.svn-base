@@ -1,0 +1,63 @@
+@import "tailwindcss";
+body {
+    background-color: #f0f4f8;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    align-items: center;
+  }
+/* 
+  @media (width >= 90rem) {
+    .container {
+        max-width: 96rem;
+    }
+} */
+ 
+::ng-deep .mat-datepicker-content .mat-calendar {
+  max-width: 240px;             /* Set the width of the calendar */
+  max-height: 292px;            /* Set the height of the calendar */
+  border-color: #DDDDDD;  /* Border around the calendar */
+  background-color: white;  /* Set the background color */
+  border-radius: 10px;      /* Rounded corners for the calendar */
+  font-size: 10px;
+}
+
+.mat-mdc-form-field-flex {
+  display: inline-flex;
+  align-items: baseline;
+  box-sizing: border-box;
+  width: 100%;
+  height: 33px !important; /* Set height to 33px */
+}
+
+/* Adjust input field height */
+.mat-mdc-text-field-wrapper {
+  height: 33px !important;
+}
+
+/* Ensure the calendar icon aligns with the input */
+.mat-mdc-form-field-icon-suffix {
+  height: 33px;
+  display: flex;
+  align-items: center;
+}
+
+/* Optional: Adjust spacing for better alignment */
+.mat-datepicker-toggle {
+  cursor: pointer;
+  margin-right: 5px; /* Adjust as needed */
+}
+/* Set padding inside the input field */
+.mdc-text-field--outlined .mat-mdc-form-field-infix,
+.mdc-text-field--no-label .mat-mdc-form-field-infix {
+    padding-top: var(--mat-form-field-container-vertical-padding, 5px) !important;
+    
+}
+.mat-mdc-form-field-bottom-align {
+  display: none !important; /* or any other required styles */
+}
+
+:root {
+  --mdc-outlined-text-field-outline-color: #DDDDDD;
+  --mdc-outlined-text-field-outline-width: 1px;
+}

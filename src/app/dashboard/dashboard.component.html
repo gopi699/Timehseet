@@ -1,0 +1,82 @@
+<div class="p-4 space-y-6">
+  <!-- 📌 Header -->
+  <div class="flex items-center justify-between">
+    <h2 class="text-2xl font-bold text-gray-700">Dashboard</h2>
+
+    <!-- 📅 Month-Year Picker -->
+    <mat-form-field appearance="fill" class="w-60">
+  <mat-label>Select Month & Year</mat-label>
+  <input matInput [matDatepicker]="picker" [formControl]="monthYearControl" >
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker 
+                  startView="multi-year"
+                  (yearSelected)="onYearSelected($event)"
+                  (monthSelected)="onMonthSelected($event, picker)"
+                  panelClass="month-picker"
+                  [startAt]="monthYearControl.value">
+  </mat-datepicker>
+  <mat-hint>MM/YYYY</mat-hint>
+</mat-form-field>
+
+  </div>
+
+  <!-- 🔷 Summary Cards -->
+  <div class="grid grid-cols-5 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
+    <div class="relative bg-indigo-500 text-white rounded shadow-md p-4 h-28">
+      <img src="assets/images/allocated.png" alt="icon" class="absolute top-2 right-2 w-8 h-8 opacity-100" />
+      <div class="text-sm">Allocated Hours</div>
+      <div class="text-2xl font-bold">500</div>
+    </div>
+    <div class="relative bg-blue-500 text-white rounded shadow-md p-4 h-28">
+      <img src="assets/images/logged.png" alt="icon" class="absolute top-2 right-2 w-8 h-8 opacity-100" />
+      <div class="text-sm">Total Hours Logged</div>
+      <div class="text-2xl font-bold">450</div>
+    </div>
+    <div class="relative bg-green-500 text-white rounded shadow-md p-4 h-28">
+      <img src="assets/images/billable.png" alt="icon" class="absolute top-2 right-2 w-8 h-8 opacity-100" />
+      <div class="text-sm">Billable Hours</div>
+      <div class="text-2xl font-bold">200</div>
+    </div>
+    <div class="relative bg-yellow-500 text-white rounded shadow-md p-4 h-28">
+      <img src="assets/images/nonbillable.png" alt="icon" class="absolute top-2 right-2 w-8 h-8 opacity-100" />
+      <div class="text-sm">Non-Billable Hours</div>
+      <div class="text-2xl font-bold">150</div>
+    </div>
+    <div class="relative bg-red-500 text-white rounded shadow-md p-4 h-28">
+      <img src="assets/images/utilization.png" alt="icon" class="absolute top-2 right-2 w-8 h-8 opacity-100" />
+      <div class="text-sm">Utilization Rate</div>
+      <div class="text-2xl font-bold">82%</div>
+    </div>
+  </div>
+
+  <!-- 📊 Top Row Charts -->
+  <div class="grid grid-cols-3 md:grid-cols-2 xl:grid-cols-3 gap-7 mt-4">
+    <div class="bg-white p-4 rounded shadow flex flex-col justify-between" style="height: 250px;">
+      <h3 class="text-md font-semibold mb-2 text-gray-700">Team Utilization</h3>
+      <canvas baseChart
+              [data]="barChartData"
+              [options]="barChartOptions"
+              [type]="'bar'">
+      </canvas>
+    </div>
+
+    <div class="bg-white p-4 rounded shadow flex flex-col justify-start" style="margin-top: 1px; height: 300px;">
+      <h3 class="text-md font-semibold mb-2 text-gray-700">Leave Distribution</h3>
+      <canvas baseChart
+              [data]="pieChartData"
+              [options]="pieChartOptions"
+              [type]="'doughnut'">
+      </canvas>
+    </div>
+
+    <div class="bg-white p-4 rounded shadow flex flex-col justify-start" style="margin-top: 10px; height: 250px;">
+      <h3 class="text-md font-semibold mb-2 text-gray-700">Billable Breakdown</h3>
+      <canvas baseChart
+              [data]="billablePieData"
+              [options]="billablePieOptions"
+              [type]="'pie'"
+              [plugins]="[datalabels]">
+      </canvas>
+    </div>
+  </div>
+</div>

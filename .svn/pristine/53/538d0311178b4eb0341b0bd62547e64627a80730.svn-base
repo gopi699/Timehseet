@@ -1,0 +1,118 @@
+<div>
+    <label class="ml-2" for="searchInput">Search:</label>
+    <input id="searchInput" type="text" [(ngModel)]="searchQuery" 
+           (input)="filterReimburse()" placeholder="Search Reimburse..." 
+           class="border border-[#DDDDDD] rounded h-8 ml-2 mt-2" />
+    <button *ngIf="searchQuery" class="-ml-6" (click)="clearSearch()">✖</button>
+    <button *ngIf="filteredReimburse.length > 0 && !isLoading" (click)="exportToExcel()" class="bg-green-700 text-white rounded p-1 float-end mr-3 mt-2 cursor-pointer">
+        Download Excel
+    </button>
+</div>
+<div class="static w-full border border-[#DDDDDD] mt-3">
+    
+    <div class=" w-full ">
+        <div class="grid grid-cols-11 me-[16px]">
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  ">
+                SNo</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  ">
+                Emp Id</div>
+                <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  ">
+                Client</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  ">
+                Project</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  ">
+                Date</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  ">
+                Claim Amount</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  ">
+                Expense</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  ">
+                Approver</div>
+                <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  ">
+                Remarks</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  ">
+                Status </div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  border border-white font-bold border-e-0 flex justify-center items-center  ">
+                Action </div>
+        </div>
+    </div>
+    
+    <div class=" w-full h-120 overflow-y-scroll">
+        @if(paginatedReimburse.length>0){
+        <div class="grid grid-cols-11"  *ngFor="let entry of paginatedReimburse; let i = index"> 
+            <div
+                class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex justify-center items-center content-center ">
+                {{ (currentPage - 1) * pageSize + i + 1 }}
+            </div>
+            <div
+                class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex justify-center items-center content-center ">
+                {{entry.EmpId}}
+            </div>
+            <div
+            class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex items-center  ">
+            {{entry.Client}}
+        </div>
+            <div
+                class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex items-center  ">
+                {{entry.Project}}
+            </div>
+            <div
+                class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex justify-center  items-center  ">
+                {{entry.Date}}
+            </div>
+            <div
+                class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex justify-center items-center   ">
+                {{entry.ClaimAmount}}
+            </div>
+            <div
+                class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex items-center">
+                {{entry.Expense}}
+            </div>
+            <div
+                class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex items-center ">
+                {{entry.Approver}}
+            </div>
+            <div
+                class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex items-center remarks-column">
+                {{entry.Remarks}}
+            </div>
+            <div
+                class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex justify-center items-center content-center "[ngStyle]="{'color': getStatusColor(entry.Status)}">
+                 {{entry.Status}}
+            </div>
+            <div
+                class="p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border border-[#DDDDDD] border-t-0 border-e-0 flex justify-center items-center content-center ">
+                <a  class="flex gap-2"  target="_blank" rel="noopener noreferrer">
+                   <!-- [href]="'http://52.66.202.211:9636/Anuyatra/Attachments/'+entry?.file_Name" -->
+                   <span class="material-symbols-outlined">
+                    download
+                    </span>
+              </a>
+            </div>
+
+        </div>
+    }
+    @else {
+        <div *ngIf="Reimburse.length === 0" class="mt-3 flex justify-center text-gray-400">
+            No data available.
+          </div>
+    }
+    </div>
+</div>
+
+  <div class=" flex p-2 w-full justify-end content-end items-center gap-2" *ngIf="Reimburse.length > pageSize">
+    <button [ngClass]="currentPage === 1?'bg-[#CCCCCC]':'bg-[#007BFF]'" class="p-2   text-white rounded" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"><</button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button [ngClass]="currentPage >= totalPages?'bg-[#CCCCCC]':'bg-[#007BFF]'" class="p-2 text-white rounded" (click)="changePage(currentPage + 1)" [disabled]="currentPage >= totalPages">></button>
+  </div>

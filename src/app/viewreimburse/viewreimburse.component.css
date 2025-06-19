@@ -1,0 +1,117 @@
+/* viewform-component.css */
+.view-reimburse-container {
+  font-family: Arial, sans-serif;
+  padding: 15px;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.search-label {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.search-input {
+  padding: 5px;
+  border: 1px solid #484646; /* Changed to match your requested border color */
+  border-radius: 4px;
+  max-width: 300px;
+  height: 32px;
+}
+
+.clear-btn {
+  margin-left: -27px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #999;
+}
+
+.download-btn {
+  background-color: #0f6516c4;
+  color: white;
+  padding: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.download-btn:hover {
+  background-color: #2b282852;
+}
+
+.header-line {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.border-line {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.remarks-column {
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+  max-width: 220px;
+}
+
+.no-data-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 70vh;
+  width: 100%;
+  padding-left: 500px;
+}
+
+.no-data-message {
+  font-size: 18px;
+  font-weight: bold;
+  color: red;
+  text-align: left;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .search-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .search-input {
+    width: 100%;
+    max-width: none;
+  }
+  
+  .download-btn {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  
+  .no-data-container {
+    padding-left: 20px;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid.grid-cols-11 {
+    grid-template-columns: repeat(11, minmax(0, 1fr));
+    font-size: 10px;
+  }
+  
+  .header-line, .border-line {
+    padding: 5px;
+  }
+}

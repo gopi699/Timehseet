@@ -1,0 +1,27 @@
+.remarks-column {
+    word-break: break-word; /* Ensures long words break */
+    white-space: normal; /* Allows wrapping */
+    overflow-wrap: break-word;
+    max-width: 220px; /* Adjust width as needed */
+}
+button:disabled {
+    background-color: #ccc !important; /* Grey background */
+    color: #666 !important; /* Dark grey text */
+    cursor: not-allowed !important; /* Show not-allowed cursor */
+    opacity: 0.6 !important; /* Reduce opacity */
+}
+
+.header-linesolvee {
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  .border-linesolvee {
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+
+  .border-linesolvees {
+    border: 1px solid #ddd;
+    padding: 10px;
+  }

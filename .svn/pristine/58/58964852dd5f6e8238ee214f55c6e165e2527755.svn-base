@@ -1,0 +1,220 @@
+import { Component, ChangeDetectorRef, OnInit, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { CommonModule,DatePipe } from '@angular/common';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
+import { DbservicesService } from '../dbservices.service';
+import { EncryptionService } from '../login/login.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule} from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class TimesheetService {
+  private submittedTimesheets: any[] = [];
+
+  getSubmittedTimesheets() {
+    return this.submittedTimesheets;
+  }
+
+  setSubmittedTimesheets(timesheets: any[]) {
+    this.submittedTimesheets = timesheets;
+  }
+
+  removeTimesheet(index: number) {
+    if (index >= 0 && index < this.submittedTimesheets.length) {
+      this.submittedTimesheets.splice(index, 1);
+    }
+  }
+}
+@Component({
+  selector: 'app-addformcreate',
+  standalone: true,
+  templateUrl: './addformcreate.component.html',
+  styleUrls: ['./addformcreate.component.scss'],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule,MatInputModule,MatDatepickerModule,MatNativeDateModule,MatFormFieldModule],
+  providers: [DatePipe]
+})
+export class AddformcreateComponent implements OnInit {
+  [x: string]: any;
+  timesheetForm!: FormGroup;
+
+  user_Id: string | null = null;
+  userProperties: any;
+  clients: any[] = [];
+  projects: any[] = [];
+  Activity: any[] = [];
+  Approver: any[] = [];
+  submitted = false;
+  myDate: Date = new Date();
+  constructor(
+    private dbService: DbservicesService,
+    private fb: FormBuilder,
+    private encryptionService: EncryptionService,
+    private router: Router,
+   // private timesheetService: TimesheetService,
+    private cdr: ChangeDetectorRef,
+    private datePipe: DatePipe
+  ) { }
+
+  ngOnInit() {
+    this.timesheetForm = this.fb.group({
+      timesheet_Details: this.fb.array([this.createTimesheetEntry()])
+    });
+
+    this.fetchData();
+  }
+  
+  myFilter = (d: Date | null): boolean => {
+    const day = (d || new Date()).getDay();
+    return day !== 0; // 0 represents Sunday in JavaScript's Date object
+  };
+  createTimesheetEntry(): FormGroup {
+    return this.fb.group({
+      client_Pk_Id: ['', Validators.required],
+      dep_Pk_Id: ['', Validators.required],
+      date: ['', Validators.required],
+      work_Pk_Id: ['', Validators.required],
+      work_Hour: [0, [Validators.required]],
+      approved_By: ['', Validators.required],
+      remarks: ['', Validators.required]
+    });
+  }
+
+  get timesheetEntries(): FormArray {
+    return this.timesheetForm.get('timesheet_Details') as FormArray;
+  }
+
+  Fetch_Project(i: any) {
+
+    // console.log(i)
+    const val: any = this.timesheetEntries.controls[i];
+    var rawVal: any = val.getRawValue();
+    // console.log(rawVal.client_Pk_Id);
+    this.dbService.GetProjectMaster({ client_Pk_Id: rawVal.client_Pk_Id }).subscribe(
+      (response: any) => {
+        this.projects[i] = response;
+        // console.log('Projects:', this.projects);
+      },
+      (error: any) => {
+        console.error('Failed to fetch projects', error);
+      }
+    );
+  }
+
+  addRow() {
+    this.timesheetEntries.push(this.createTimesheetEntry());
+    this.cdr.detectChanges();
+  }
+
+  deleteRow(index: number): void {
+    this.timesheetEntries.removeAt(index);
+    this.cdr.detectChanges();
+  }
+  // rabilan changed
+  datechange(i:any)
+  {
+  const val: any = this.timesheetEntries.controls[i];
+ var formatDate:any=this.datePipe.transform(new Date(val.controls.date.value), 'yyyy-MM-dd');
+ val.controls.date.setValue(formatDate);
+  }
+
+  formattedDate: string = '';
+  onSubmit() {
+    this.submitted = true;
+    const formData:any = this.timesheetForm.getRawValue();
+    
+    if (this.timesheetForm.valid) {
+      
+      this.dbService.GetInsertTimeSheet(formData).subscribe(
+        response => {
+          //console.log('Success:', response);
+  
+          if (response[0].statuscode == 200) {
+            Swal.fire({
+              text: response[0].description, 
+              icon: 'success', 
+              confirmButtonText: 'OK'
+            }).then(() => {
+              this.timesheetForm.reset();
+              this.timesheetEntries.clear();
+              this.timesheetEntries.push(this.createTimesheetEntry());
+  
+              this.cdr.detectChanges();
+              this.router.navigate(['layout/view']);
+            });
+          } else {
+            Swal.fire({
+              text: response[0].description, // ✅ Only the response message
+              icon: 'error',
+              showConfirmButton: true,
+              confirmButtonText: 'OK',
+              title: '' // ✅ Ensures there is no title
+            })
+          }
+        },
+        error => {
+          console.error('Error:', error);
+  
+          Swal.fire({
+            title: 'Error!',
+            text: 'Failed to submit the form. Please try again.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        }
+      );
+    } else {
+      console.log('Form is invalid');
+  
+      Swal.fire({
+        text: 'Please fill in all required fields correctly!', // ✅ Removed "Invalid Form!" title
+        icon: 'warning',
+        confirmButtonText: 'OK'
+      });
+    }
+  }
+  
+  
+  
+
+  navigateToView() {
+    this.router.navigate(['layout/view']);
+  }
+
+  private fetchData() {
+    this.dbService.getClientMaster({}).subscribe(
+      (response: any) => {
+        this.clients = response;
+        //console.log('Clients:', this.clients);
+      },
+      (error: any) => {
+        console.error('Failed to fetch clients', error);
+      }
+    );
+
+    this.dbService.GetWorkCategory({}).subscribe(
+      (response: any) => {
+        this.Activity = response;
+        //console.log('Activity:', this.Activity);
+      },
+      (error: any) => {
+        console.error('Failed to fetch activities', error);
+      }
+    );
+
+    this.dbService.GetApproverList({}).subscribe(
+      (response: any) => {
+        this.Approver = response;
+        //console.log('Approver:', this.Approver);
+      },
+      (error: any) => {
+        console.error('Failed to fetch approvers', error);
+      }
+    );
+  }
+}

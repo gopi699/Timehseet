@@ -1,0 +1,129 @@
+<form action="" [formGroup]="form">
+    <div class="w-full h-full bg-white">
+        <div class="pt-5 px-5 gap-2 flex flex-col md:flex-row xl:flex-row">
+            <div
+                class="flex w-full rounded-md h-11  ps-2  ">
+                <p class="w-1/2 flex   items-center content-center h-full">Employee Code</p>
+                <input class="w-full rounded-md text-blue-900  ps-2 h-full  bg-[#E8F0FE]" type="text">
+            </div>
+            <div
+                class="flex w-full rounded-md h-11  ps-2   ">
+                <p class="w-1/2 flex   items-center  content-center h-full">Name</p>
+                <input class="w-full rounded-md text-blue-900  ps-2 h-full  bg-[#E8F0FE]" type="text">
+            </div>
+            <div
+                class="flex w-full rounded-md h-11  ps-2    ">
+                <p class="w-1/2 flex   items-center content-center h-full">Company Name </p>
+                <input class="w-full rounded-md text-blue-900  ps-2 h-full  bg-[#E8F0FE]" type="text">
+            </div>
+        </div>
+        <div class="pt-5 px-5 gap-2 flex flex-col md:flex-row xl:flex-row">
+            <div
+                class="flex w-full rounded-md h-11   ps-2   ">
+                <p class="w-1/2 flex   items-center content-center h-full">Role </p>
+                <input class="w-full text-blue-900  bg-[#E8F0FE] rounded-md ps-2 h-full " type="text">
+            </div>
+            <div
+                class="flex w-full rounded-md h-11   ps-2   ">
+                <p class="w-1/2 flex   items-center content-center h-full">Designation </p>
+                <input class="w-full text-blue-900  bg-[#E8F0FE] rounded-md ps-2 h-full " type="text">
+            </div>
+            <div
+                class="flex w-full rounded-md h-11  ps-2   ">
+                <p class="w-1/2 flex   items-center content-center h-full">Date Of Join </p>
+                <input class="w-full ps-2 border-0 bg-[#E8F0FE] rounded-md" (focus)="openDatepicker()"
+                    (click)="openDatepicker()" (keydown)="openDatepicker()" matInput [matDatepicker]="picker"
+                    placeholder="Select Date">
+                <mat-datepicker #picker></mat-datepicker>
+            </div>
+        </div>
+        <div class=" pt-5 px-5 gap-2  flex flex-col md:flex-row xl:flex-row">
+
+            <div
+                class="flex w-full rounded-md h-11   ps-2   ">
+                <p class="w-1/2 flex   items-center content-center h-full">Gender </p>
+                <select name="" id="" class="w-full bg-[#E8F0FE] rounded-md text-blue-900  ps-2 h-full ">
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                </select>
+            </div>
+            <div
+                class="flex w-full rounded-md h-11   ps-2   ">
+                <p class="w-1/2 flex   items-center content-center h-full">Email </p>
+                <input class="w-full text-blue-900 bg-[#E8F0FE] rounded-md  ps-2 h-full " type="text">
+            </div>
+            <div
+                class="flex rounded-md w-full h-11  ps-2   ">
+                <p class="w-1/2 flex   items-center content-center h-full">Password </p>
+                <input formControlName="password" (keyup)=" passWordStrength()"
+                    class="w-full rounded-md bg-[#E8F0FE] text-blue-900  ps-2 h-full " type="text">
+            </div>
+        </div>
+        <div class="  px-5 gap-2  flex flex-col w-full h-full md:flex-row xl:flex-row">
+            <div class="flex rounded-md w-full  ps-2"></div>
+            <div class="flex justify-center items-center flex-col rounded-md w-full mt-5 ps-2">
+                <div class=" flex gap-2 mb-2">
+
+                    <input id="active" class=" h-5  rounded " type="checkbox">
+                    <label for="active" class="w-1/2 flex  items-center content-center h-full">Active </label>
+                </div>
+                <Button
+                class="bg-green-700 rounded shadow-md shadow-black/60 text-white w-36 hover:scale-[103%]   0 p-2 flex items-center justify-center">
+                Submit</Button>
+            </div>
+            <div class="flex flex-col pb-5 w-full justify-end  ">
+                <div class="text-xl">Password Strength<p class="text-xs">
+                        (Please choose a stronger password. Try a mix of letters, numbers, and
+                        symbols with min 8 charecter.)
+                    </p>
+                </div>
+                <div class=" h-1 w-full bg-neutral-200 dark:bg-neutral-600">
+                    <div
+                        class="h-1  {{passwordStrength==30?'w-[35%] bg-red-600':''}} {{passwordStrength==65?'w-[55%] bg-yellow-500':''}}{{passwordStrength==100?'w-full  bg-green-600 ':''}}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class=" flex justify-center items-center">
+       
+    </div>
+</form>
+<div class=" flex justify-center items-center p-2">
+
+
+
+</div>
+
+<div class="static w-full  p-5">
+
+    <div class=" w-full border border-[#DDDDDD] ">
+        <div class="grid grid-cols-8  ">
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-white font-bold flex justify-center items-center   border text-center border-e-0">
+                Name</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-white font-bold flex justify-center items-center   border text-center border-e-0">
+                Date Of Join</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-white font-bold flex justify-center items-center   border text-center border-e-0">
+                Employee Code</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-white font-bold flex justify-center items-center   border text-center border-e-0">
+                Company Name</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-white font-bold flex justify-center items-center   border text-center border-e-0">
+                Role</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-white font-bold flex justify-center items-center   border text-center border-e-0">
+                Designation</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-white font-bold flex justify-center items-center   border text-center border-e-0">
+                Gender</div>
+            <div
+                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-white font-bold flex justify-center items-center   border text-center ">
+                Email</div>
+        </div>
+    </div>
+</div>
