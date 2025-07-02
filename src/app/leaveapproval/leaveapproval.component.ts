@@ -47,6 +47,10 @@ export class LeaveapprovalComponent implements OnInit {
   fromDate: any[] = [];
   toDate: any[] = [];
   status: any[] = [];
+  showRejectModal: boolean = false;
+rejectRemarks: string = '';
+rejectLeave: any = null;
+
 
   constructor(
     private dbservicesService: DbservicesService,
@@ -217,6 +221,37 @@ export class LeaveapprovalComponent implements OnInit {
       }
     );
   }
+confirmReject(): void {
+  if (!this.rejectRemarks || this.rejectRemarks.trim() === '') {
+    alert('Please enter remarks to reject.');
+    return;
+  }
+
+  const payload = {
+    pk_Status_Id: 4,
+    approver_Leave: [{
+      pk_Leave_Details_Id: this.rejectLeave.pk_Leave_Details_Id,
+      remarks: this.rejectRemarks
+    }]
+  };
+
+  this.dbservicesService.LeaveAppUpdateStatus(payload).subscribe(
+    (response: any) => {
+      this.getSubmittedleave(); // reload leave data
+      this.cancelReject();
+    },
+    (error: any) => {
+      console.error('Failed to update Leave Reject Status', error);
+      this.cancelReject();
+    }
+  );
+}
+
+cancelReject(): void {
+  this.showRejectModal = false;
+  this.rejectRemarks = '';
+  this.rejectLeave = null;
+}
 
 
   toggleSelectAll(event: Event): void {
@@ -241,15 +276,11 @@ export class LeaveapprovalComponent implements OnInit {
     this.approveOrReject(payload);
   }
 
-  rejectEntry(leave: any): void {
-    leave.status = 'Rejected';
-    leave.statusColor = 'red';
-    const payload = {
-      pk_Status_Id: 4,
-      approver_Leave: [{ pk_Leave_Details_Id: leave.pk_Leave_Details_Id }]
-    };
-    this.approveOrReject(payload);
-  }
+ rejectEntry(leave: any): void {
+  this.rejectLeave = leave;
+  this.showRejectModal = true;
+}
+
 
   approveAll(): void {
     this.submittedleave.forEach(leave => {

@@ -51,6 +51,35 @@ select:focus {
 .delete-btn:hover {
   background-color: #CC0000;
 }
+/* addreimburse.component.css */
+/* In your component's CSS file */
+:host {
+  display: block;
+  position: relative;
+  min-height: 200px; /* Ensure space for testing */
+}
+
+/* Modal backdrop */
+.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/* Modal content */
+.bg-white {
+  background-color: white;
+}
+
+/* Ensure dropdowns appear above other content */
+select {
+  z-index: 10;
+  position: relative;
+}
+
+/* Ensure no parent elements have overflow: hidden */
 
 .header-linese {
   border: 1px solid #ddd;

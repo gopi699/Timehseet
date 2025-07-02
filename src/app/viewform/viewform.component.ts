@@ -21,6 +21,8 @@ interface Timesheet {
   Approver: string;
   Remarks: string;
   Status: string;
+   ManagerRemarks: string; // ➡️ Added this line
+  
 }
 
 @Component({
@@ -38,6 +40,8 @@ export class ViewformComponent implements OnInit {
   isLoading: boolean = false;
   currentPage: number = 1;
   pageSize: number = 10;
+  fromDate: string = '';
+  toDate: string = '';
 
   constructor(
     private dbService: DbservicesService,
@@ -83,7 +87,8 @@ export class ViewformComponent implements OnInit {
             WorkHour: ts.work_Hour ? ts.work_Hour.toString() : '0',
             Approver: ts.approved_By || 'N/A',
             Remarks: ts.remarks || '',
-            Status: ts.status || 'Pending'
+            Status: ts.status || 'Pending',
+            ManagerRemarks: ts.reject_Remarks || '', // ➡️ Added mapping
           }));
   
           // ✅ Ensure newly added timesheets appear first
@@ -109,15 +114,25 @@ export class ViewformComponent implements OnInit {
   }
   
   // ✅ Search & filter timesheets
-  filterTimesheets() {
-    this.filteredTimesheets = this.timesheets.filter(entry =>
-      Object.values(entry).some(value =>
-        value.toString().toLowerCase().includes(this.searchQuery.toLowerCase())
-      )
+filterTimesheets() {
+  this.filteredTimesheets = this.timesheets.filter(entry => {
+    const matchesSearch = Object.values(entry).some(value =>
+      value.toString().toLowerCase().includes(this.searchQuery.toLowerCase())
     );
-    this.currentPage = 1;
-    this.updatePagination();
-  }
+
+    const entryDate = new Date(entry.Date.split('-').reverse().join('-')); // Converts DD-MMM-YYYY to YYYY-MM-DD
+    const from = this.fromDate ? new Date(this.fromDate) : null;
+    const to = this.toDate ? new Date(this.toDate) : null;
+
+    const withinDateRange = (!from || entryDate >= from) && (!to || entryDate <= to);
+
+    return matchesSearch && withinDateRange;
+  });
+
+  this.currentPage = 1;
+  this.updatePagination();
+}
+
 
   // ✅ Remove a timesheet
   removeTimesheet(index: number) {

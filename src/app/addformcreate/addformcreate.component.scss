@@ -1,193 +1,383 @@
 .timesheet-container {
+  padding: 16px;
   width: 100%;
+  box-sizing: border-box;
   font-family: Arial, sans-serif;
-  margin: 0 auto;
-  padding: 10px;
 }
 
-/* Table Structure */
-.table-header, .table-body {
+/* Instructions */
+.instruction {
+  background-color: #eaf6ff;
+  padding: 12px 16px;
+  border-left: 4px solid #2196f3;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+/* Previous and Current Week Buttons Styling */
+.week-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+
+  .nav-btn {
+    background-color: #2196f3;
+    color: white;
+    font-size: 13px;
+    padding: 5px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    min-width: 80px;
+
+    &:hover {
+      background-color: #1976d2;
+    }
+
+    &:disabled {
+      background-color: #a0aec0;
+      cursor: not-allowed;
+    }
+  }
+
+  .week-number {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+  }
+}
+
+/* Week Info Section */
+.week-summary-bar {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+  padding-left: 8px;
+
+  .week-summary-cell {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+  }
+
+  .week-label {
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .weekday-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    span {
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: monospace;
+    }
+  }
+}
+
+/* Native date input styling */
+.native-date-input {
+  width: 100%;
+  height: 40px;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #333;
+  background-color: white;
+}
+
+.date-label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: inline-block;
+}
+
+/* Table layout */
+.table-header,
+.table-body {
   display: flex;
   flex-direction: column;
 }
 
-.header-row, .body-row {
+.header-row,
+.body-row {
   display: flex;
-  width: 100%;
 }
 
-.header-cell, .body-cell {
-  padding: 8px;
-  border: 1px solid #DDDDDD;
-  display: flex;
-  align-items: center;
-}
-
-.header-cell {
-  background-color: #3498DB;
-  color: white;
-  font-weight: bold;
-  text-align: center;
-  justify-content: center;
-}
-
-.body-cell {
-  background-color: white;
-  min-height: 10px;
-}
-
-/* Column Widths */
-.serial-col {
-  width: 60px;
-  justify-content: center;
-}
-
-.client-col {
-  flex: 1;
-  min-width: 120px;
-}
-
-.project-col {
-  flex: 1;
-  min-width: 120px;
-}
-
-.date-col {
-  width: 170px;
-}
-
-.activity-col {
-  flex: 1;
-  min-width: 120px;
-}
-
-.hours-col {
-  width: 100px;
-  justify-content: center;
-}
-
-.approver-col {
-  flex: 1;
-  min-width: 120px;
-}
-
-.remarks-col {
-  flex: 1;
-  min-width: 120px;
-}
-
-.action-col {
-  width: 60px;
-  justify-content: center;
-}
-
-/* Form Elements */
-.form-select, .form-input {
-  width: 100%;
-  padding: 6px 8px;
-  border: 1px solid #DDDDDD;
-  border-radius: 4px;
-  font-size: 13px;
-  height: 32px;
-}
-
-.form-select {
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 8px center;
-  background-size: 14px;
-}
-
-/* Date Picker Styles */
 .date-picker {
   width: 100%;
-  
+
   ::ng-deep .mat-mdc-text-field-wrapper {
     height: 32px;
     padding: 0 8px;
     align-items: center;
   }
-  
+
   ::ng-deep .mat-mdc-form-field-flex {
     height: 100%;
   }
-  
+
   ::ng-deep .mat-mdc-form-field-infix {
     padding: 0;
     min-height: auto;
   }
-  
+
   ::ng-deep .mat-mdc-text-field__input {
     font-size: 13px;
     height: 24px;
   }
-  
+
   ::ng-deep .mat-mdc-form-field-subscript-wrapper {
     display: none;
   }
 }
 
-/* Buttons */
-.form-buttons {
+.header-cell,
+.body-cell {
+  padding: 8px;
+  border: 1px solid #ccc;
   display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 20px;
+  align-items: center;
 }
 
-.submit-btn {
-  background-color: #4CAF50;
+.header-cell {
+  background: #3498db;
   color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.add-btn {
-  background-color: #369ef4;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.delete-btn {
-  background-color: red;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  font-size: 12px;
   font-weight: bold;
+  justify-content: center;
+}
+
+.body-cell {
+  background: #fff;
+}
+
+/* Column widths */
+.copy-col {
+  width: 50px;
+  justify-content: center;
+}
+
+.serial-col {
+  width: 60px;
+  justify-content: center;
+}
+
+.client-col,
+.project-col,
+.activity-col,
+.approver-col,
+.remarks-col {
+  flex: 1;
+  min-width: 120px;
+}
+
+.date-col {
+  width: 160px;
+}
+
+.hours-col {
+  width: 70px;
+  justify-content: center;
+}
+
+.action-col {
+  width: 100px;
+  justify-content: center;
+}
+
+/* Form controls */
+.form-select,
+.form-input {
+  width: 100%;
+  padding: 6px;
+  font-size: 13px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  height: 32px;
+}
+
+.date-picker {
+  width: 100%;
+}
+
+/* Buttons general */
+.form-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.submit-btn,
+.add-btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
+
+  &:hover {
+    background-color: #45a049;
+  }
+
+  &:disabled {
+    background-color: #a5d6a7;
+    cursor: not-allowed;
+  }
+}
+
+/* Reusable icon button styles */
+.icon-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 16px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
-  line-height: 1;
+}
+
+/* Red circular icon buttons for delete and clear */
+.red-circle {
+  background-color: red;
+  border-radius: 50%;
+  color: white;
+}
+
+.red-circle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.delete-btn-container {
+  flex: 1;
+  text-align: left;
+  padding-left: 4px;
+}
+
+.delete-btn1-container {
+  flex: 1;
+  text-align: right;
+  padding-right: 4px;
+}
+
+/* Specific buttons extending shared styles */
+.delete-btn {
+  @extend .icon-btn;
+  @extend .red-circle;
+}
+
+.clear-btn {
+  @extend .icon-btn;
+  @extend .red-circle;
+}
+
+/* Highlight selected row */
+.body-row {
+  background-color: white !important;
+  transition: background-color 0.3s ease;
+
+  &.selected {
+    background-color: #cce5ff !important;
+    border-left: 4px solid #007bff;
+
+    .body-cell {
+      background-color: #cce5ff !important;
+    }
+  }
+
+  &.pasted {
+    background-color: #d9fdd3 !important;
+    animation: flash 1s ease-in-out;
+  }
+
+  &:hover {
+    background-color: #f4faff;
+    cursor: pointer;
+  }
+}
+
+/* 🆕🆕🆕 GRAY OUT DISABLED FIELDS 👇 */
+input[disabled],
+select[disabled],
+textarea[disabled],
+.form-select[disabled],
+.form-input[disabled],
+.mat-input-element[disabled] {
+  background-color: #f3f3f3 !important;
+  opacity: 0.7 !important;
+  color: #666 !important;
+  cursor: not-allowed !important;
+}
+
+/* Also disable buttons visually */
+button[disabled] {
+  opacity: 0.6 !important;
+  background-color: #ccc !important;
+  cursor: not-allowed !important;
+}
+
+/* Disabled cell */
+.disabled-cell {
+  background-color: #f0f0f0;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Checkbox scaling */
+input[type="checkbox"] {
+  transform: scale(1.3);
+  cursor: pointer;
+}
+
+/* Animation for pasted rows */
+@keyframes flash {
+  from {
+    background-color: #fff3cd;
+  }
+  to {
+    background-color: #d9fdd3;
+  }
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-  .header-row, .body-row {
+  .header-row,
+  .body-row {
     flex-wrap: wrap;
   }
-  
-  .header-cell, .body-cell {
+
+  .header-cell,
+  .body-cell {
     flex: 1 0 50%;
   }
-  
+
   .form-buttons {
     flex-direction: column;
   }
-  
-  .submit-btn, .add-btn {
+
+  .submit-btn,
+  .add-btn {
     width: 100%;
+  }
+
+  .copy-col {
+    width: 100%;
+    justify-content: flex-start;
   }
 }

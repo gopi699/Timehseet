@@ -1,129 +1,299 @@
-<form action="" [formGroup]="form">
-    <div class="w-full h-full bg-white">
-        <div class="pt-5 px-5 gap-2 flex flex-col md:flex-row xl:flex-row">
-            <div
-                class="flex w-full rounded-md h-11  ps-2  ">
-                <p class="w-1/2 flex   items-center content-center h-full">Employee Code</p>
-                <input class="w-full rounded-md text-blue-900  ps-2 h-full  bg-[#E8F0FE]" type="text">
-            </div>
-            <div
-                class="flex w-full rounded-md h-11  ps-2   ">
-                <p class="w-1/2 flex   items-center  content-center h-full">Name</p>
-                <input class="w-full rounded-md text-blue-900  ps-2 h-full  bg-[#E8F0FE]" type="text">
-            </div>
-            <div
-                class="flex w-full rounded-md h-11  ps-2    ">
-                <p class="w-1/2 flex   items-center content-center h-full">Company Name </p>
-                <input class="w-full rounded-md text-blue-900  ps-2 h-full  bg-[#E8F0FE]" type="text">
-            </div>
-        </div>
-        <div class="pt-5 px-5 gap-2 flex flex-col md:flex-row xl:flex-row">
-            <div
-                class="flex w-full rounded-md h-11   ps-2   ">
-                <p class="w-1/2 flex   items-center content-center h-full">Role </p>
-                <input class="w-full text-blue-900  bg-[#E8F0FE] rounded-md ps-2 h-full " type="text">
-            </div>
-            <div
-                class="flex w-full rounded-md h-11   ps-2   ">
-                <p class="w-1/2 flex   items-center content-center h-full">Designation </p>
-                <input class="w-full text-blue-900  bg-[#E8F0FE] rounded-md ps-2 h-full " type="text">
-            </div>
-            <div
-                class="flex w-full rounded-md h-11  ps-2   ">
-                <p class="w-1/2 flex   items-center content-center h-full">Date Of Join </p>
-                <input class="w-full ps-2 border-0 bg-[#E8F0FE] rounded-md" (focus)="openDatepicker()"
-                    (click)="openDatepicker()" (keydown)="openDatepicker()" matInput [matDatepicker]="picker"
-                    placeholder="Select Date">
-                <mat-datepicker #picker></mat-datepicker>
-            </div>
-        </div>
-        <div class=" pt-5 px-5 gap-2  flex flex-col md:flex-row xl:flex-row">
-
-            <div
-                class="flex w-full rounded-md h-11   ps-2   ">
-                <p class="w-1/2 flex   items-center content-center h-full">Gender </p>
-                <select name="" id="" class="w-full bg-[#E8F0FE] rounded-md text-blue-900  ps-2 h-full ">
-                    <option value="female">Female</option>
-                    <option value="male">Male</option>
-                </select>
-            </div>
-            <div
-                class="flex w-full rounded-md h-11   ps-2   ">
-                <p class="w-1/2 flex   items-center content-center h-full">Email </p>
-                <input class="w-full text-blue-900 bg-[#E8F0FE] rounded-md  ps-2 h-full " type="text">
-            </div>
-            <div
-                class="flex rounded-md w-full h-11  ps-2   ">
-                <p class="w-1/2 flex   items-center content-center h-full">Password </p>
-                <input formControlName="password" (keyup)=" passWordStrength()"
-                    class="w-full rounded-md bg-[#E8F0FE] text-blue-900  ps-2 h-full " type="text">
-            </div>
-        </div>
-        <div class="  px-5 gap-2  flex flex-col w-full h-full md:flex-row xl:flex-row">
-            <div class="flex rounded-md w-full  ps-2"></div>
-            <div class="flex justify-center items-center flex-col rounded-md w-full mt-5 ps-2">
-                <div class=" flex gap-2 mb-2">
-
-                    <input id="active" class=" h-5  rounded " type="checkbox">
-                    <label for="active" class="w-1/2 flex  items-center content-center h-full">Active </label>
-                </div>
-                <Button
-                class="bg-green-700 rounded shadow-md shadow-black/60 text-white w-36 hover:scale-[103%]   0 p-2 flex items-center justify-center">
-                Submit</Button>
-            </div>
-            <div class="flex flex-col pb-5 w-full justify-end  ">
-                <div class="text-xl">Password Strength<p class="text-xs">
-                        (Please choose a stronger password. Try a mix of letters, numbers, and
-                        symbols with min 8 charecter.)
-                    </p>
-                </div>
-                <div class=" h-1 w-full bg-neutral-200 dark:bg-neutral-600">
-                    <div
-                        class="h-1  {{passwordStrength==30?'w-[35%] bg-red-600':''}} {{passwordStrength==65?'w-[55%] bg-yellow-500':''}}{{passwordStrength==100?'w-full  bg-green-600 ':''}}">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class=" flex justify-center items-center">
-       
-    </div>
-</form>
-<div class=" flex justify-center items-center p-2">
+<div class="w-full p-4">
+ <div *ngIf="roleId == 1" class="flex items-center gap-2 mb-4">
+  <label class="font-medium whitespace-nowrap">Employee</label>
+  <select #employeeSelect
+          class="input-field employee-dropdown"
+          (change)="onEmployeeChanged(employeeSelect.value)">
+    <option value="">-- Select Employee --</option>
+    <option *ngFor="let user of userList" [value]="user.user_Pk_Id">
+      {{ user.user_Name }}
+    </option>
+  </select>
+</div>
 
 
+   <!-- <label class="font-medium whitespace-nowrap">Role</label> -->
+  <!-- Step Wizard Tabs -->
+   <div class="step-tabs-container mb-6">
+  <div
+    *ngFor="let step of steps; let i = index"
+    class="step-tab"
+    [ngClass]="{
+      'active': activeTab === i + 1,
+      'completed': activeTab > i + 1
+    }"
+    (click)="onTabClick(i + 1)"
+  >
+    <div class="step-title">Step {{ i + 1 }}</div>
+    <div class="step-description">{{ step }}</div>
+  </div>
+</div>
+
+
+  <!-- Tab 1: Employee Master -->
+  <div *ngIf="activeTab === 1">
+    <form [formGroup]="employeeMasterForm" class="grid grid-cols-4 md:grid-cols-3 gap-6">
+      <!-- <div><label class="block mb-1 font-medium">Employee ID</label><input formControlName="employee_Id" class="input-field" /></div> -->
+      <div>
+  <label class="block mb-1 font-medium">Entity</label>
+  <select formControlName="entity" class="input-field" [disabled]="roleId !== 1">
+    <option value="">-- Select Entity --</option>
+    <option *ngFor="let entity of entityList" [value]="entity.company_Name">
+      {{ entity.company_Name }}
+    </option>
+  </select>
+</div>
+      <div><label class="block mb-1 font-medium">Employee Name</label><input formControlName="employee_Name" class="input-field" [disabled]="roleId !== 1" /></div>
+
+      <div><label class="block mb-1 font-medium">Business Unit</label>
+  <select formControlName="business_unit" class="input-field" [disabled]="roleId !== 1">
+    <option value="">-- Select Business Unit --</option>
+    <option *ngFor="let bu of buList" [value]="bu.bu_Code">
+      {{ bu.bu_Code }}
+    </option>
+  </select>
+</div>
+      <div><label class="block mb-1 font-medium">Date of Joining</label><input formControlName="date_of_joining" type="date" class="input-field" [disabled]="roleId !== 1" /></div>
+      <!-- <div><label class="block mb-1 font-medium">Employee Role</label><input formControlName="employe_roll" class="input-field" /></div> -->
+
+<div>
+  <label class="block mb-1 font-medium">Employee Role</label>
+  <select formControlName="employe_roll" class="input-field" [disabled]="roleId !== 1">
+  <option value="">-- Select Employee Role --</option>
+  <option *ngFor="let rl of rolelist" [value]="rl.role_Pk_Id">
+    {{ rl.role_Name }}
+  </option>
+</select>
 
 </div>
 
-<div class="static w-full  p-5">
 
-    <div class=" w-full border border-[#DDDDDD] ">
-        <div class="grid grid-cols-8  ">
-            <div
-                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-white font-bold flex justify-center items-center   border text-center border-e-0">
-                Name</div>
-            <div
-                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-white font-bold flex justify-center items-center   border text-center border-e-0">
-                Date Of Join</div>
-            <div
-                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-white font-bold flex justify-center items-center   border text-center border-e-0">
-                Employee Code</div>
-            <div
-                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-white font-bold flex justify-center items-center   border text-center border-e-0">
-                Company Name</div>
-            <div
-                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-white font-bold flex justify-center items-center   border text-center border-e-0">
-                Role</div>
-            <div
-                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-white font-bold flex justify-center items-center   border text-center border-e-0">
-                Designation</div>
-            <div
-                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-white font-bold flex justify-center items-center   border text-center border-e-0">
-                Gender</div>
-            <div
-                class="bg-[#3498DB] text-white p-1 text-[8px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px] border-white font-bold flex justify-center items-center   border text-center ">
-                Email</div>
-        </div>
+      <div><label class="block mb-1 font-medium">Designation</label><input formControlName="designation" class="input-field" [disabled]="roleId !== 1" /></div>
+      <div><label class="block mb-1 font-medium">Email</label><input formControlName="email_Id_personal" class="input-field" [disabled]="roleId !== 1"/></div>
+      <div><label class="block mb-1 font-medium">Phone Number</label><input formControlName="phone_number" class="input-field" [disabled]="roleId !== 1" /></div>
+      <div><label class="block mb-1 font-medium">Emergency Contact No</label><input formControlName="emergency_contact_number_1" class="input-field" [disabled]="roleId !== 1"/></div>
+    </form>
+    <div class="mt-6 flex justify-center" *ngIf="roleId == 1">
+      <button (click)="submitMasterForm()" class="bg-green-600 text-white px-6 py-2 rounded hover:scale-105">Submit Master</button>
     </div>
+  </div>
+
+  <!-- Tab 2: Personal Details -->
+  <div *ngIf="activeTab === 2">
+    <form [formGroup]="personalDetailsForm" class="grid grid-cols-4 md:grid-cols-3 gap-6">
+   <div>
+ <label class="block mb-1 font-medium">Professional Photo</label>
+<input
+  type="file"
+  (change)="onFileChange($event, 'file')"
+  #fileInput
+  class="input-field"
+/>
+
+<!-- Show selected file name if available -->
+<div *ngIf="selectedPersonalFile" class="text-sm text-gray-500 mt-1">
+  Selected: {{ selectedPersonalFile.name }}
 </div>
+
+</div>
+
+
+      <div><label class="block mb-1 font-medium">Date of Birth</label><input formControlName="date_of_Birth" type="date" class="input-field" /></div>
+      <div><label class="block mb-1 font-medium">Gender</label><select formControlName="gender" class="input-field"><option value="">Select Gender</option><option>Male</option><option>Female</option><option>Other</option></select></div>
+      <div><label class="block mb-1 font-medium">PAN Number</label><input formControlName="paN_No" class="input-field" /></div>
+      <div><label class="block mb-1 font-medium">Aadhaar Number</label><input formControlName="aadhaar_Card_Number" class="input-field" /></div>
+      <div><label class="block mb-1 font-medium">Marital Status</label><select formControlName="marital_Status" class="input-field"><option value="">Marital Status</option><option>Single</option><option>Married</option><option>Divorced</option></select></div>
+      <div><label class="block mb-1 font-medium">Blood Group</label><input formControlName="blood_Group" class="input-field" /></div>
+      <div><label class="block mb-1 font-medium">Father's Name</label><input formControlName="fathers_Name" class="input-field" /></div>
+      <div><label class="block mb-1 font-medium">Mother's Name</label><input formControlName="mothers_Name" class="input-field" /></div>
+      <div><label class="block mb-1 font-medium">Spouse Name</label><input formControlName="spouse_Name" class="input-field" /></div>
+      <div><label class="block mb-1 font-medium">Number of Kids</label><input formControlName="number_of_kids" class="input-field" /></div>
+      <div class="md:col-span-3"><label class="block mb-1 font-medium">Permanent Address</label><textarea formControlName="permanent_Address" class="input-field"></textarea></div>
+      <div><label class="block mb-1 font-medium">Emergency Contact Name 2</label><input formControlName="emergency_Contact_Name_2" class="input-field" /></div>
+    </form>
+    <div class="mt-6 flex justify-center">
+      <button (click)="goToNextStep(personalDetailsForm)" class="bg-blue-600 text-white px-6 py-2 rounded hover:scale-105">Next Step</button>
+
+    </div>
+  </div>
+
+  <!-- Tab 3: Bank Details -->
+  <!-- Tab 3: Bank Details -->
+<!-- Tab 3: Bank Details -->
+<div *ngIf="activeTab === 3">
+  <form [formGroup]="bankDetailsForm">
+    <table class="table-auto w-full border border-gray-300 text-sm">
+      <thead class="bg-blue-100">
+        <tr class="text-left">
+          <th class="border px-3 py-2">S.No</th>
+          <th class="border px-3 py-2">Account No</th>
+          <th class="border px-3 py-2">IFSC Code</th>
+          <th class="border px-3 py-2">Type</th>
+          <th class="border px-3 py-2">Bank Name</th>
+          <th class="border px-3 py-2">Branch</th>
+          <th class="border px-3 py-2">Action</th>
+        </tr>
+      </thead>
+      <tbody formArrayName="bankDetails">
+        <tr
+          *ngFor="let bank of bankDetailsArray.controls; let i = index"
+          [formGroupName]="i"
+          class="border-t"
+        >
+          <td class="border px-2 py-1">{{ i + 1 }}</td>
+          <td class="border px-2 py-1"><input formControlName="bank_Account_No" class="input-field" /></td>
+          <td class="border px-2 py-1"><input formControlName="ifsC_Code" class="input-field" /></td>
+          <td class="border px-2 py-1"><input formControlName="bank_Account_Type" class="input-field" /></td>
+          <td class="border px-2 py-1"><input formControlName="bank_Name" class="input-field" /></td>
+          <td class="border px-2 py-1"><input formControlName="bank_Branch" class="input-field" /></td>
+          <td class="border px-2 py-1 text-center">
+            <button
+              type="button"
+              (click)="removeBankAccount(i)"
+              *ngIf="bankDetailsArray.length > 1"
+              class="text-red-500 hover:text-red-700"
+              title="Remove"
+            >
+              ❌
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="mt-6 flex justify-center gap-4">
+      <button
+        type="button"
+        (click)="addBankAccount()"
+        class="bg-blue-500 text-white px-4 py-1 rounded hover:scale-105"
+      >
+        + Add Bank
+      </button>
+      <button
+  type="button"
+  (click)="goToNextStep(bankDetailsForm)"
+  class="bg-blue-600 text-white px-6 py-2 rounded hover:scale-105"
+>
+  Next Step
+</button>
+
+    </div>
+  </form>
+</div>
+
+
+<!-- Tab 4: Education -->
+<!-- Tab 4: Education -->
+<div *ngIf="activeTab === 4">
+  <form [formGroup]="educationDetailsForm" class="space-y-8">
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr>
+            <th>Education Level</th>
+            <th>Course</th>
+            <th>Institution</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="educationRows">
+  <tr *ngFor="let row of educationArray.controls; let i = index" [formGroupName]="i">
+    <td>{{ row.get('level')?.value }}</td>
+    <td><input formControlName="course" class="input-field w-full" placeholder="Course"/></td>
+    <td><input formControlName="institution" class="input-field w-full" placeholder="Institution"/></td>
+    <td><input type="date" formControlName="start" class="input-field w-full"/></td>
+    <td><input type="date" formControlName="end" class="input-field w-full"/></td>
+    <td>
+      <button type="button" (click)="addEducationRow(i)" class="text-green-600">➕</button>
+      <button type="button" (click)="removeEducationRow(i)" *ngIf="educationArray.length > 1" class="text-red-600">❌</button>
+    </td>
+  </tr>
+</tbody>
+
+      </table>
+    </div>
+
+    <!-- Only Next Button -->
+    <div class="mt-6 text-right">
+      <button (click)="goToNextStep(educationDetailsForm)" class="bg-blue-600 text-white px-6 py-2 rounded hover:scale-105">
+        Next Step
+      </button>
+    </div>
+  </form>
+</div>
+
+
+  <!-- Tab 5: Previous Company -->
+  <!-- Tab 5: Previous Company -->
+<div *ngIf="activeTab === 5">
+  <form [formGroup]="previousCompanyForm">
+    <table class="table-auto w-full border border-gray-300 text-sm">
+      <thead class="bg-blue-100">
+        <tr class="text-left">
+          <th class="border px-3 py-2">S.No</th>
+          <th class="border px-3 py-2">Company Name</th>
+          <th class="border px-3 py-2">Designation</th>
+          <th class="border px-3 py-2">Brief Profile</th>
+          <th class="border px-3 py-2">Last Working Date</th>
+          <th class="border px-3 py-2">Experience Letter</th>
+          <th class="border px-3 py-2">Payslip</th>
+          <th class="border px-3 py-2">Action</th>
+        </tr>
+      </thead>
+      <tbody formArrayName="previousCompanyDetails">
+        <tr
+          *ngFor="let prev of previousCompanyArray.controls; let i = index"
+          [formGroupName]="i"
+          class="border-t"
+        >
+          <td class="border px-2 py-1">{{ i + 1 }}</td>
+          <td class="border px-2 py-1"><input formControlName="company_Name" class="input-field" /></td>
+          <td class="border px-2 py-1"><input formControlName="designation" class="input-field" /></td>
+          <td class="border px-2 py-1"><input formControlName="breif_about_profile" class="input-field" /></td>
+          <td class="border px-2 py-1"><input formControlName="lwd" type="date" class="input-field" /></td>
+          <td class="border px-2 py-1">
+  <input type="file" (change)="onPreviousCompanyFileChange($event, i, 'experience_letter')" class="input-field" />
+</td>
+<td class="border px-2 py-1">
+  <input type="file" (change)="onPreviousCompanyFileChange($event, i, 'payslip')" class="input-field" />
+</td>
+
+          <td class="border px-2 py-1 text-center">
+            <button
+              type="button"
+              (click)="removePreviousCompany(i)"
+              *ngIf="previousCompanyArray.length > 1"
+              class="text-red-500 hover:text-red-700"
+              title="Remove"
+            >
+              ❌
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="mt-6 flex justify-center gap-4">
+      <button
+        type="button"
+        (click)="addPreviousCompany()"
+        class="bg-blue-500 text-white px-4 py-1 rounded hover:scale-105"
+      >
+        + Add Previous Company
+      </button>
+    <button
+  type="button"
+  (click)="submitAllEmployeeDetails()"
+  class="bg-green-600 text-white px-6 py-2 rounded hover:scale-105"
+>
+  Submit All Details
+</button>
+
+
+    </div>
+  </form>
+</div>
+
+

@@ -8,48 +8,48 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
 import Swal from 'sweetalert2';
 
 interface LeaveList {
   id: number;
   EmpId: string;
-  // EmpName: string;
+  type: string;
   FromDate: string;
   ToDate: string;
+  WorkingDate: string;
+  LeaveDate: string;
   LeaveType: string;
   Reason: string;
   Approver: string;
   Status: string;
+  ManagerRemarks: string; // ➡️ Added this line
 }
-
 
 @Component({
   selector: 'app-applyleave',
+  standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule],
   providers: [DatePipe],
   templateUrl: './applyleave.component.html',
   styleUrl: './applyleave.component.css'
 })
-
 export class ApplyleaveComponent {
   paginatedLeave: LeaveList[] = [];
   Leavelist: LeaveList[] = [];
   filteredLeave: LeaveList[] = [];
-  currentPage: number = 1; 
-  pageSize: number = 10; 
+  regularizeList: LeaveList[] = [];
+  currentPage: number = 1;
+  pageSize: number = 10;
   ApplyLeave!: FormGroup;
   Leave: any[] = [];
   Approver: any[] = [];
   isLoading: boolean = false;
-  selectedDate: any;
-  from_Date: string = '';
   myDate: Date = new Date();
   roleId: any;
- 
-  //searchQuery: string = '';
-  submittedLeave: LeaveList[] = [];
- 
+  selectedType: string = '';
+  showFromToDate: boolean = false;
+  showWorkingLeaveDate: boolean = false;
+
   constructor(
     private dbService: DbservicesService,
     private fb: FormBuilder,
@@ -57,128 +57,187 @@ export class ApplyleaveComponent {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private datePipe: DatePipe
-  ) { }
+  ) {}
 
   ngOnInit() {
-    
     this.roleId = sessionStorage.getItem("roleId");
-    console.log(this.roleId);
-    // this.formattedDate = this.datePipe.transform(this.fromDate, 'yyyy-MM-dd')!;
-    // console.log(this.formattedDate);  // Output: "2025-02-18"
     this.fetchData();
     this.loadLeaveListFromAPI();
-    this.ApplyLeave = this.fb.group({
-      from_Date: ['', Validators.required],
-      to_Date: ['', Validators.required],
-      leave_Pk_Id: [null, Validators.required],
-      reason: ['', Validators.required],
-      approved_By: [null, Validators.required]
-    });
 
-  };
+    this.ApplyLeave = this.fb.group({
+      type: ['', Validators.required],
+      leave_Pk_Id: [''],
+      regularizeType: [''],
+      from_Date: [''],
+      to_Date: [''],
+      working_Date: [''],
+      leave_Date: [''],
+      reason: ['', Validators.required],
+      approved_By: ['300044']
+    });
+  }
 
   myFilter = (d: Date | null): boolean => {
     const day = (d || new Date()).getDay();
-    return day !== 0; // 0 represents Sunday in JavaScript's Date object
+    return day !== 0;
   };
 
   private fetchData() {
-    this.dbService.getLeaveMaster({}).subscribe(
-      (response: any) => {
-        this.Leave = response;
-        //console.log('Leave:', this.Leave);
-      },
-      (error: any) => {
-        console.error('Failed to fetch Leavetype', error);
-      }
-    );
-    this.dbService.GetApproverList({}).subscribe(
-      (response: any) => {
-        this.Approver = response;
-        //console.log('Approver:', this.Approver);
-      },
-      (error: any) => {
-        console.error('Failed to fetch Approvers', error);
-      }
-    );
+    this.dbService.getLeaveMaster({}).subscribe({
+      next: (res) => this.Leave = res,
+      error: (err) => console.error('Leave fetch error:', err)
+    });
+    this.dbService.GetApproverList({}).subscribe({
+      next: (res) => this.Approver = res,
+      error: (err) => console.error('Approver fetch error:', err)
+    });
   }
-  // formattedDate: string = '';
-  onApply(): void {
-    const formData = this.ApplyLeave.getRawValue();
-    //console.log("leave", formData);
-    //console.log(formData.from_Date);
-    // const fromDate = formData.from_Date;  
 
-    // if (fromDate) {
-    //   const formattedDate = this.datePipe.transform(new Date(fromDate), 'yyyy-MM-dd');
-    //   console.log("Formatted From Date:", formattedDate);  
-    //   formData.from_Date = formattedDate;
-    // }
+  onTypeChange(event: any) {
+    const value = event.target.value;
+    this.selectedType = value;
+    this.showFromToDate = value === 'Leave';
+    this.showWorkingLeaveDate = false;
+
+    if (value === 'Leave') {
+      this.ApplyLeave.get('leave_Pk_Id')?.setValidators([Validators.required]);
+      this.ApplyLeave.get('regularizeType')?.clearValidators();
+    } else if (value === 'Regularize') {
+      this.ApplyLeave.get('regularizeType')?.setValidators([Validators.required]);
+      this.ApplyLeave.get('leave_Pk_Id')?.clearValidators();
+    } else {
+      this.ApplyLeave.get('leave_Pk_Id')?.clearValidators();
+      this.ApplyLeave.get('regularizeType')?.clearValidators();
+    }
+
+    this.ApplyLeave.get('leave_Pk_Id')?.updateValueAndValidity();
+    this.ApplyLeave.get('regularizeType')?.updateValueAndValidity();
+
+    this.ApplyLeave.patchValue({
+      leave_Pk_Id: '',
+      regularizeType: '',
+      from_Date: '',
+      to_Date: '',
+      working_Date: '',
+      leave_Date: ''
+    });
+  }
+
+  onRegularizeTypeChange(event: any) {
+    const value = event.target.value;
+    if (value === 'On Duty') {
+      this.showFromToDate = true;
+      this.showWorkingLeaveDate = false;
+    } else if (value === 'Comp Off') {
+      this.showFromToDate = false;
+      this.showWorkingLeaveDate = true;
+    } else {
+      this.showFromToDate = false;
+      this.showWorkingLeaveDate = false;
+    }
+
+    this.ApplyLeave.patchValue({
+      from_Date: '',
+      to_Date: '',
+      working_Date: '',
+      leave_Date: ''
+    });
+  }
+
+  onApply(): void {
+    if (this.ApplyLeave.invalid) {
+      this.markFormGroupTouched(this.ApplyLeave);
+      Swal.fire('Validation Error', 'Please fill all required fields.', 'warning');
+      return;
+    }
+
+    const formValue = this.ApplyLeave.getRawValue();
+
+    if (formValue.type === 'Leave') {
+      if (!formValue.leave_Pk_Id || !formValue.from_Date || !formValue.to_Date) {
+        Swal.fire('Validation Error', 'Please fill required fields for Leave.', 'warning');
+        return;
+      }
+    } else if (formValue.type === 'Regularize') {
+      if (!formValue.regularizeType) {
+        Swal.fire('Validation Error', 'Please select a Regularize Type', 'warning');
+        return;
+      }
+      if (formValue.regularizeType === 'On Duty' && (!formValue.from_Date || !formValue.to_Date)) {
+        Swal.fire('Validation Error', 'Please fill dates for On Duty', 'warning');
+        return;
+      }
+      if (formValue.regularizeType === 'Comp Off' && (!formValue.working_Date || !formValue.leave_Date)) {
+        Swal.fire('Validation Error', 'Please fill dates for Comp Off', 'warning');
+        return;
+      }
+    }
+
+    const payload = {
+      user_Pk_Id: sessionStorage.getItem('userId'),
+      type: formValue.type,
+      leave_Pk_Id: formValue.type === 'Leave' ? formValue.leave_Pk_Id : null,
+      type_Description: formValue.type === 'Regularize' ? formValue.regularizeType : null,
+      from_Date: formValue.type === 'Leave' || formValue.regularizeType === 'On Duty' ? this.toISODate(formValue.from_Date) : null,
+      to_Date: formValue.type === 'Leave' || formValue.regularizeType === 'On Duty' ? this.toISODate(formValue.to_Date) : null,
+      working_Date: formValue.regularizeType === 'Comp Off' ? this.toISODate(formValue.working_Date) : null,
+      leave_Date: formValue.regularizeType === 'Comp Off' ? this.toISODate(formValue.leave_Date) : null,
+      reason: formValue.reason,
+      approved_By: '300044',
+      status: 'Pending'
+    };
+
+    console.log('Final Payload being sent to API:', payload);
 
     this.isLoading = true;
-    this.dbService.InsertLeave(formData).subscribe(
-      response => {
-        //console.log('Success:', response);
-
-        if (response[0].statuscode == 200) {
-          Swal.fire({
-            text: response[0].description,
-            icon: 'success',
-            confirmButtonText: 'OK'
-          }).then(() => {
-            this.ApplyLeave.reset();
-
-            this.cdr.detectChanges();
-            window.location.reload();
-            //this.router.navigate(['layout/view']);
-          });
-        } else {
-          Swal.fire({
-            text: response[0].description,
-            icon: 'error',
-            showConfirmButton: true,
-            confirmButtonText: 'OK',
-            title: ''
-          })
-        }
-      },
-      error => {
-        console.error('Error:', error);
-
-        Swal.fire({
-          title: 'Error!',
-          text: 'Failed to submit the form. Please try again.',
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
-      }
-    );
+this.dbService.InsertLeave(payload).subscribe({
+  next: (res) => {
+    if (res[0]?.statuscode === 200) {
+      Swal.fire('Success', res[0].description, 'success').then(() => {
+        this.ApplyLeave.reset();
+        this.loadLeaveListFromAPI();
+      });
+    } else {
+      Swal.fire('Error', res[0]?.description || 'Submission failed', 'error');
+    }
+  },
+  error: (err) => {
+    console.error('Submission error:', err);
+    Swal.fire('Error', 'Failed to submit request', 'error');
+  },
+  complete: () => {
+    this.isLoading = false;
   }
+});
+
+  }
+
   formatDate(dateString: string): string {
     if (!dateString) return 'N/A';
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return 'Invalid Date';
-
     const day = date.getDate().toString().padStart(2, '0');
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const month = monthNames[date.getMonth()];
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   }
-  getStatusColor(status: string): string {
-    switch (status.toLowerCase()) {
-      case 'pending':
-        return 'blue';
-      case 'approved':
-        return 'green';
-      case 'reject':
-        return 'red';
-      default:
-        return 'black';
-    }
+
+  private toISODate(dateString: string): string {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toISOString();
   }
-  
-  // Pagination logic
+
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
+
   get totalPages(): number {
     return Math.ceil(this.Leavelist.length / this.pageSize);
   }
@@ -187,7 +246,6 @@ export class ApplyleaveComponent {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.paginatedLeave = this.Leavelist.slice(startIndex, endIndex);
-  
   }
 
   changePage(page: number): void {
@@ -197,59 +255,48 @@ export class ApplyleaveComponent {
     }
   }
 
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.changePage(this.currentPage + 1);
-    }
-  }
-
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.changePage(this.currentPage - 1);
-    }
-  }
-
-
   loadLeaveListFromAPI() {
     this.isLoading = true;
     const userId: any = Number(sessionStorage.getItem('userId'));
     const payload: any = { user_Pk_Id: userId };
 
-    this.dbService.getLeaveList(payload).subscribe(
-      (data: any[]) => {
-        //console.log("API Response:", data);
+    this.dbService.getLeaveList(payload).subscribe({
+      next: (data: any[]) => {
+        console.log('Raw Leave List API Response:', data);
+       this.Leavelist = (data || []).map((item: any): LeaveList => {
+  const isCompOff = item.type === 'Regularize' && item.type_Description === 'Comp Off';
+const isOnDuty = item.type === 'Regularize' && item.type_Description === 'On Duty';
 
-        if (data && data.length > 0) {
-          this.Leavelist = data.map((ts: any): LeaveList => ({
-            id: ts.Pk_Leave_Details_Id,
-            EmpId: ts.user_Pk_Id || 'N/A',
-            FromDate: this.formatDate(ts.from_Date),
-            ToDate: this.formatDate(ts.to_Date),
-            LeaveType: ts.leave_Description || 'N/A',
-            Reason: ts.reason || 'N/A',
-            Approver: ts.approved_By || '',
-            Status: ts.status || 'Pending'
-          }));
+  return {
+    id: item.pk_Leave_Details_Id || item.id,
+    EmpId: item.user_Pk_Id || 'N/A',
+    type: item.type || '',
+FromDate: item.type === 'Leave' || isOnDuty ? this.formatDate(item.from_Date) : '',
+ToDate: item.type === 'Leave' || isOnDuty ? this.formatDate(item.to_Date) : '',
+WorkingDate: isCompOff ? this.formatDate(item.working_Date) : '',
+LeaveDate: isCompOff ? this.formatDate(item.leave_Date) : '',
+    LeaveType: item.type === 'Regularize'
+      ? (item.type_Description || 'Regularize')
+      : (item.leave_Description || 'Leave'),
+    Reason: item.reason || 'N/A',
+    Approver: item.approved_By || '',
+    Status: item.status || 'Pending',
+    ManagerRemarks: item.reject_Remarks || '' // ➡️ Added mapping here
+  };
+}).sort((a, b) => b.id - a.id);
 
-          // ✅ Ensure newly added timesheets appear first
-          this.Leavelist.sort((a, b) => b.id - a.id);  // Sort by ID (assuming higher ID means newer record)
 
-          this.filteredLeave = [...this.Leavelist];
+        this.filteredLeave = [...this.Leavelist];
+        this.regularizeList = this.Leavelist.filter(x => x.type === 'Regularize');
 
-          // ✅ Always show the latest data on the first page
-          this.currentPage = 1;
-          this.updatePagination();
-          //this.timesheetService.setSubmittedTimesheets(this.Leavelist);
-        } else {
-          console.warn("No data received from API.");
-        }
+        this.currentPage = 1;
+        this.updatePagination();
       },
-      (error) => {
-        console.error("Error fetching timesheets:", error);
+      error: (err) => {
+        console.error('Leave list error:', err);
+        Swal.fire('Error', 'Failed to load leave data', 'error');
       },
-      () => {
-        this.isLoading = false;
-      }
-    );
+      complete: () => this.isLoading = false
+    });
   }
 }

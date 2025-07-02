@@ -148,6 +148,29 @@
 <div *ngIf="errorMessage" class="error-message">
     {{ errorMessage }}
 </div>
+<div *ngIf="showRejectModal" class="fixed inset-0 bg-black/40 bg-opacity-20 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg p-6 w-80 shadow-lg">
+    <h2 class="text-lg font-semibold mb-4">Reject Remarks</h2>
+    <input
+      type="text"
+      [(ngModel)]="rejectRemarks"
+      placeholder="Enter remarks"
+      class="w-full border-[1px] border-solid border-gray-400 focus:border-blue-500 focus:outline-none p-2 rounded mb-4"
+    />
+
+    <div class="flex justify-end space-x-2">
+      <button
+        (click)="confirmReject()"
+        class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+      >Submit</button>
+      <button
+        (click)="cancelReject()"
+        class="bg-gray-300 text-black px-3 py-1 rounded hover:bg-gray-400"
+      >Cancel</button>
+    </div>
+  </div>
+</div>
+
 <!-- 🔹 Pagination Controls -->
 <div class="flex p-2 w-full justify-end content-end items-center gap-2">
     <button [ngClass]="currentPage === 1?'bg-[#CCCCCC]':'bg-[#007BFF]'" class="p-2   text-white rounded" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"><</button>

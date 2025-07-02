@@ -1,76 +1,200 @@
-<div class="p-4 space-y-6">
+<!-- 🔷 Summary Cards + Birthday + Notice -->
+
+
+
+
+<!-- ✅ Outer wrapper to prevent horizontal scroll -->
+<div class="p-4 space-y-6 w-full ">
+
   <!-- 📌 Header -->
   <div class="flex items-center justify-between">
     <h2 class="text-2xl font-bold text-gray-700">Dashboard</h2>
 
     <!-- 📅 Month-Year Picker -->
-    <mat-form-field appearance="fill" class="w-60">
-  <mat-label>Select Month & Year</mat-label>
-  <input matInput [matDatepicker]="picker" [formControl]="monthYearControl" >
+    <mat-form-field appearance="fill" class="w-60 big-input">
+  <mat-label class="h-100">Select Month & Year</mat-label>
+  <input matInput [matDatepicker]="picker" [formControl]="monthYearControl">
   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-datepicker #picker 
-                  startView="multi-year"
-                  (yearSelected)="onYearSelected($event)"
-                  (monthSelected)="onMonthSelected($event, picker)"
-                  panelClass="month-picker"
-                  [startAt]="monthYearControl.value">
+  <mat-datepicker 
+    #picker
+    startView="multi-year"
+    (yearSelected)="onYearSelected($event)"
+    (monthSelected)="onMonthSelected($event, picker)"
+    panelClass="month-picker"
+    [startAt]="monthYearControl.value">
   </mat-datepicker>
   <mat-hint>MM/YYYY</mat-hint>
 </mat-form-field>
 
+
+    
+ <!-- <mat-form-field appearance="outline" class="w-48">
+ <mat-label>Select Month & Year</mat-label>
+ <input
+ matInput
+ [formControl]="monthYearControl"
+ [matDatepicker]="picker"
+ [value]="formattedMonthYear"
+ readonly
+ (click)="picker.open()"
+ />
+ <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+ <mat-datepicker
+ #picker
+ startView="multi-year"
+ (yearSelected)="onYearSelected($event)"
+ (monthSelected)="onMonthSelected($event, picker)"
+ panelClass="month-picker"
+ [startAt]="monthYearControl.value"
+ ></mat-datepicker>
+</mat-form-field> -->
+
+
   </div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+  <!-- 🎂 Birthday Card -->
+  <div class="bg-purple-100 w-full h-full p-6 flex items-center justify-center">
+    <div *ngIf="birthdayList.length > 0" class="flex items-center gap-6 transition-all duration-500 ease-in-out">
+      <img
+        [src]="getCurrentPhotoUrl()"
+        alt="Avatar"
+        class="w-56 h-52 border-2 border-purple-600"
+      />
+      <div>
+        <div class="text-2xl font-bold text-purple-800">
+          {{ birthdayList[currentIndex]?.employee_Name }}
+        </div>
+        <div class="text-xl text-gray-700">
+          {{ birthdayList[currentIndex]?.date_of_Birth | date: 'MMM d, y' }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 📢 Notice Board Card -->
+  <div class="bg-rose-100 p-4 rounded shadow w-full h-full overflow-hidden relative">
+    <div *ngFor="let notice of noticeBoard; let i = index">
+      <div class="flex flex-col mb-3">
+        <div class="flex items-start gap-2 cursor-pointer" (click)="openNoticePopup(notice)">
+          <div>
+            <div class="text-sm font-bold text-blue-800">{{ notice.header }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Notice Popup - remains unchanged below the grid -->
+<div *ngIf="showNoticePopup" class="fixed inset-0 flex items-center justify-center z-50">
+  <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" (click)="closePopup()"></div>
+
+  <div class="relative bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-auto mx-4 z-50">
+    <div class="p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-gray-800">{{ selectedNotice?.header }}</h3>
+        <button (click)="closePopup()" class="text-gray-500 hover:text-red-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="mb-4">
+        <p class="text-gray-700 mb-1 font-semibold">Description:</p>
+        <p class="text-gray-600">{{ selectedNotice?.description }}</p>
+      </div>
+
+      <div class="mb-4">
+        <p class="text-gray-700 mb-1 font-semibold">Footer:</p>
+        <p class="text-gray-600">{{ selectedNotice?.footer }}</p>
+      </div>
+
+      <div *ngIf="selectedNotice?.attachment" class="mb-4">
+        <p class="text-gray-700 mb-2 font-semibold">Attachment:</p>
+        <button (click)="downloadAttachment(selectedNotice.attachment)"
+                class="flex items-center text-blue-600 hover:text-blue-800 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+                  d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                  clip-rule="evenodd"/>
+          </svg>
+          Download Attachment
+        </button>
+      </div>
+
+      <div class="mt-6 text-right">
+        <button (click)="closePopup()"
+                class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
   <!-- 🔷 Summary Cards -->
   <div class="grid grid-cols-5 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
-    <div class="relative bg-indigo-500 text-white rounded shadow-md p-4 h-28">
+    <div class="relative bg-gray-500 text-white rounded shadow-md p-4 h-28">
       <img src="assets/images/allocated.png" alt="icon" class="absolute top-2 right-2 w-8 h-8 opacity-100" />
-      <div class="text-sm">Allocated Hours</div>
-      <div class="text-2xl font-bold">500</div>
+      <div class="text-sm">Allocated Hours</div><br>
+      <div class="text-2xl font-bold">{{ allocatedHours }}</div>
     </div>
     <div class="relative bg-blue-500 text-white rounded shadow-md p-4 h-28">
       <img src="assets/images/logged.png" alt="icon" class="absolute top-2 right-2 w-8 h-8 opacity-100" />
-      <div class="text-sm">Total Hours Logged</div>
-      <div class="text-2xl font-bold">450</div>
+      <div class="text-sm">Total Hours Logged</div><br>
+      <div class="text-2xl font-bold">{{ totalLoggedHours }}</div>
     </div>
     <div class="relative bg-green-500 text-white rounded shadow-md p-4 h-28">
       <img src="assets/images/billable.png" alt="icon" class="absolute top-2 right-2 w-8 h-8 opacity-100" />
-      <div class="text-sm">Billable Hours</div>
-      <div class="text-2xl font-bold">200</div>
+      <div class="text-sm">Billable Hours</div><br>
+      <div class="text-2xl font-bold">{{ billableHours }}</div>
     </div>
     <div class="relative bg-yellow-500 text-white rounded shadow-md p-4 h-28">
       <img src="assets/images/nonbillable.png" alt="icon" class="absolute top-2 right-2 w-8 h-8 opacity-100" />
-      <div class="text-sm">Non-Billable Hours</div>
-      <div class="text-2xl font-bold">150</div>
+      <div class="text-sm">Non-Billable Hours</div><br>
+      <div class="text-2xl font-bold">{{ nonBillableHours }}</div>
     </div>
     <div class="relative bg-red-500 text-white rounded shadow-md p-4 h-28">
       <img src="assets/images/utilization.png" alt="icon" class="absolute top-2 right-2 w-8 h-8 opacity-100" />
-      <div class="text-sm">Utilization Rate</div>
-      <div class="text-2xl font-bold">82%</div>
+      <div class="text-sm">Utilization Rate</div><br>
+      <div class="text-2xl font-bold">{{ utilizationRate }}%</div>
     </div>
   </div>
 
-  <!-- 📊 Top Row Charts -->
-  <div class="grid grid-cols-3 md:grid-cols-2 xl:grid-cols-3 gap-7 mt-4">
-    <div class="bg-white p-4 rounded shadow flex flex-col justify-between" style="height: 250px;">
-      <h3 class="text-md font-semibold mb-2 text-gray-700">Team Utilization</h3>
-      <canvas baseChart
-              [data]="barChartData"
-              [options]="barChartOptions"
-              [type]="'bar'">
-      </canvas>
-    </div>
+  <!-- 📊 Team Utilization Chart - Full Width -->
 
-    <div class="bg-white p-4 rounded shadow flex flex-col justify-start" style="margin-top: 1px; height: 300px;">
-      <h3 class="text-md font-semibold mb-2 text-gray-700">Leave Distribution</h3>
+  <div class="team-utilization-chart mt-4 bg-white p-6 rounded shadow">
+    <h3 class="text-xl font-semibold mb-4 text-gray-700">Project Utilization</h3>
+    <canvas baseChart
+            [data]="barChartData"
+            [options]="barChartOptions"
+            [type]="'bar'">
+    </canvas>
+  </div>
+
+  <!-- 📊 Equal Size Pie Charts in Same Row -->
+  <div class="flex flex-col md:flex-row gap-3 mt-4">
+  <!-- Leave Distribution Chart -->
+  <div class="flex-1 bg-white p-6 rounded shadow">
+    <h3 class="text-md font-semibold mb-4 text-gray-700">Leave Distribution</h3>
+    <div class="chart-container" style="position: relative; height: 250px;">
       <canvas baseChart
               [data]="pieChartData"
               [options]="pieChartOptions"
               [type]="'doughnut'">
       </canvas>
     </div>
+  </div>
 
-    <div class="bg-white p-4 rounded shadow flex flex-col justify-start" style="margin-top: 10px; height: 250px;">
-      <h3 class="text-md font-semibold mb-2 text-gray-700">Billable Breakdown</h3>
+  <!-- Billable Breakdown Chart -->
+  <div class="flex-1 bg-white p-6 rounded shadow">
+    <h3 class="text-md font-semibold mb-4 text-gray-700">Billable Breakdown</h3>
+    <div class="chart-container" style="position: relative; height: 250px;">
       <canvas baseChart
               [data]="billablePieData"
               [options]="billablePieOptions"
@@ -79,4 +203,7 @@
       </canvas>
     </div>
   </div>
+</div>
+
+
 </div>

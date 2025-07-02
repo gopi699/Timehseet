@@ -1,5 +1,12 @@
-import { Component, ChangeDetectorRef, OnInit, Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { DbservicesService } from '../dbservices.service';
@@ -10,10 +17,9 @@ import { CommonModule } from '@angular/common';
   selector: 'app-addreimburse',
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './addreimburse.component.html',
-  styleUrl: './addreimburse.component.css'
+  styleUrl: './addreimburse.component.css',
 })
 export class AddreimburseComponent implements OnInit {
-  [x: string]: any;
   reimburse!: FormGroup;
   user_Id: string | null = null;
   userProperties: any;
@@ -24,20 +30,25 @@ export class AddreimburseComponent implements OnInit {
   submitted = false;
   selectedFile: File[] = [];
 
+  // Modal-related properties
+  showOthersModal = false;
+  showLocalConveyanceModal = false;
+  othersRemarks = '';
+  selectedConveyance = '';
+  currentRowIndex: number | null = null;
+
   constructor(
     private dbService: DbservicesService,
     private fb: FormBuilder,
     private encryptionService: EncryptionService,
     private router: Router,
     private cdr: ChangeDetectorRef
-
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.reimburse = this.fb.group({
-      reimburse_Details: this.fb.array([this.createreimburseEntry()])
+      reimburse_Details: this.fb.array([this.createreimburseEntry()]),
     });
-
     this.fetchData();
   }
 
@@ -47,11 +58,11 @@ export class AddreimburseComponent implements OnInit {
       dep_Pk_Id: ['', Validators.required],
       date: ['', Validators.required],
       claim_Amount: [0, Validators.required],
-      expense_Pk_Id: ['', [Validators.required]],
+      expense_Pk_Id: ['', Validators.required],
       kms: [0],
       approver: ['', Validators.required],
       remarks: ['', Validators.required],
-      files: ['']
+      files: [''],
     });
   }
 
@@ -66,16 +77,12 @@ export class AddreimburseComponent implements OnInit {
     }
   }
 
-  Fetch_Project(i: any) {
-
-    // console.log(i)
+  Fetch_Project(i: number) {
     const val: any = this.reimburseEntries.controls[i];
-    var rawVal: any = val.getRawValue();
-    // console.log(rawVal.client_Pk_Id);
+    const rawVal: any = val.getRawValue();
     this.dbService.GetProjectMaster({ client_Pk_Id: rawVal.client_Pk_Id }).subscribe(
       (response: any) => {
         this.projects[i] = response;
-        // console.log('Projects:', this.projects);
       },
       (error: any) => {
         console.error('Failed to fetch projects', error);
@@ -92,96 +99,145 @@ export class AddreimburseComponent implements OnInit {
     this.reimburseEntries.removeAt(index);
     this.cdr.detectChanges();
   }
-  formattedDate: string = '';
+
+onExpenseChange(expenseId: string, index: number) {
+  const selectedExpense = this.Expense.find(e => String(e.id) === String(expenseId));
+  if (selectedExpense) {
+    const desc = selectedExpense.description.toLowerCase().trim();
+    console.log('Selected Expense:', desc);
+
+    if (desc.includes('other')) {
+      this.showOthersModal = true;
+      this.currentRowIndex = index;
+    } else if (desc.includes('local conveyance')) {
+      this.showLocalConveyanceModal = true;
+      this.currentRowIndex = index;
+    }
+  }
+}
+
+
+  saveOthersRemarks() {
+    if (this.currentRowIndex !== null) {
+      this.reimburseEntries.at(this.currentRowIndex).patchValue({
+        remarks: this.othersRemarks,
+      });
+    }
+    this.othersRemarks = '';
+    this.showOthersModal = false;
+    this.currentRowIndex = null;
+  }
+
+ cancelOthersRemarks() {
+  if (this.currentRowIndex !== null) {
+    this.reimburseEntries.at(this.currentRowIndex).patchValue({
+      expense_Pk_Id: ''
+    });
+  }
+  this.othersRemarks = '';
+  this.showOthersModal = false;
+  this.currentRowIndex = null;
+}
+
+  saveLocalConveyance() {
+    if (this.currentRowIndex !== null) {
+      this.reimburseEntries.at(this.currentRowIndex).patchValue({
+        remarks: this.selectedConveyance,
+      });
+    }
+    this.selectedConveyance = '';
+    this.showLocalConveyanceModal = false;
+    this.currentRowIndex = null;
+  }
+
+  cancelLocalConveyance() {
+  if (this.currentRowIndex !== null) {
+    this.reimburseEntries.at(this.currentRowIndex).patchValue({
+      expense_Pk_Id: ''
+    });
+  }
+  this.selectedConveyance = '';
+  this.showLocalConveyanceModal = false;
+  this.currentRowIndex = null;
+}
+
   onSubmit() {
     this.submitted = true;
     const formValues = this.reimburse.getRawValue();
 
     if (this.reimburse.valid) {
-
       const payload = { ...formValues };
 
       this.dbService.InsertReimburse(payload).subscribe(
-        response => {
+        (response) => {
           if (response[0].statuscode === 200) {
-
             const uploadData = new FormData();
             let filesExist = false;
 
             formValues?.reimburse_Details?.forEach((detail: any, index: number) => {
               const dateValue = detail.date;
               const fileControl = this.selectedFile?.[index];
-              //console.log("files", fileControl);
 
               if (fileControl && fileControl instanceof File) {
                 const fileName = fileControl.name;
-                uploadData.append("files", fileControl, fileName);
-                filesExist = true; // ✅ File exists, set flag to true
+                uploadData.append('files', fileControl, fileName);
+                filesExist = true;
               }
-              uploadData.append("date", dateValue);
+              uploadData.append('date', dateValue);
             });
 
-            //console.log("uploadData", uploadData);
-
             if (filesExist) {
-              // ✅ File exists, call the file upload service
               this.dbService.InsertReimburseUpload(uploadData).subscribe(
-                uploadResponse => {
-                  //console.log('File Upload Success:', uploadResponse);
+                (uploadResponse) => {
                   this.handleSuccess(response[0].description);
                 },
-                uploadError => {
+                (uploadError) => {
                   console.error('File Upload Error:', uploadError);
                   Swal.fire({
                     title: 'Error!',
                     text: 'Failed to upload the files. Please try again.',
                     icon: 'error',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
                   });
                 }
               );
             } else {
-              // ❌ No file, show success message directly
               this.handleSuccess(response[0].description);
             }
-
           } else {
             Swal.fire({
               text: response[0].description,
               icon: 'error',
               showConfirmButton: true,
               confirmButtonText: 'OK',
-              title: ''
+              title: '',
             });
           }
         },
-        error => {
+        (error) => {
           console.error('Error:', error);
           Swal.fire({
             title: 'Error!',
             text: 'Failed to submit the form. Please try again.',
             icon: 'error',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
           });
         }
       );
-
     } else {
-      console.log('Form is invalid');
       Swal.fire({
         text: 'Please fill in all required fields correctly!',
         icon: 'warning',
-        confirmButtonText: 'OK'
+        confirmButtonText: 'OK',
       });
     }
   }
 
-  // ✅ Handle success action for both scenarios
   handleSuccess(description: string) {
     Swal.fire({
       text: description,
       icon: 'success',
-      confirmButtonText: 'OK'
+      confirmButtonText: 'OK',
     }).then(() => {
       this.reimburse.reset();
       this.reimburseEntries.clear();
@@ -191,12 +247,10 @@ export class AddreimburseComponent implements OnInit {
     });
   }
 
-
   private fetchData() {
     this.dbService.getClientMaster({}).subscribe(
       (response: any) => {
         this.clients = response;
-        //console.log('Clients:', this.clients);
       },
       (error: any) => {
         console.error('Failed to fetch clients', error);
@@ -206,7 +260,6 @@ export class AddreimburseComponent implements OnInit {
     this.dbService.getExpenseMaster({}).subscribe(
       (response: any) => {
         this.Expense = response;
-        //console.log('Expense:', this.Expense);
       },
       (error: any) => {
         console.error('Failed to fetch activities', error);
@@ -216,7 +269,6 @@ export class AddreimburseComponent implements OnInit {
     this.dbService.GetApproverList({}).subscribe(
       (response: any) => {
         this.Approver = response;
-        //console.log('Approver:', this.Approver);
       },
       (error: any) => {
         console.error('Failed to fetch approvers', error);

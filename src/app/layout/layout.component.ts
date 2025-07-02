@@ -58,11 +58,11 @@ export class LayoutComponent implements OnInit {
         //console.log('API Response:', response);
         this.menuList = response.menuItem;
 
-        // this.menuList.push({icon: "event_available",id: null,parent_Id: 0,pkScreenId: 1,route: null,screenName: "Master",title: "Master",type: "collapsable",
-        //   submenu:[
-        //     {icon:"view_list",id :  null, parent_Id :  2, pkScreenId :  10, route :  "employee-Master", screenName :  "Master", title :  "Employee-Master", type :  "basic"},
-        //     {icon:"view_list",id :  null, parent_Id :  2, pkScreenId :  10, route :  "client-Master", screenName :  "Master", title :  "Client-Master", type :  "basic"}
-        //   ]})
+         this.menuList.push({icon: "event_available",id: null,parent_Id: 0,pkScreenId: 1,route: null,screenName: "Master",title: "Master",type: "collapsable",
+          submenu:[
+            {icon:"view_list",id :  null, parent_Id :  2, pkScreenId :  10, route :  "employee-Master", screenName :  "Master", title :  "Employee-Master", type :  "basic"},
+        //    {icon:"view_list",id :  null, parent_Id :  2, pkScreenId :  10, route :  "client-Master", screenName :  "Master", title :  "Client-Master", type :  "basic"}
+          ]})
         // this.populateMenuItems(response.menuItem); // Populate the form with the received data
       },
       (error) => {
@@ -104,12 +104,12 @@ export class LayoutComponent implements OnInit {
       case 'dashboard':
         this.headerTitle = 'Dashboard';
         break;
-      /*case 'client-Master':
-        this.headerTitle = ' Client Master';
-        break;
+      // case 'client-Master':
+      //   this.headerTitle = ' Client Master';
+      //   break;
       case 'employee-Master':
         this.headerTitle = 'Employee Master';
-        break;*/
+        break;
 
       default:
         this.headerTitle = '';

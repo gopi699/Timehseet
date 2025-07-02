@@ -29,7 +29,27 @@ import {
   GetReimburseListApp_URL,
   UpdateReimburseStatus_URL,
   DownloadReimburseStatus_URL, 
-  Getdashboardlisr_URL
+  Getdashboardlisr_URL,
+  Getdashboardprojectwiselist_URL,
+  Getdashboardprojecleavelist_URL,
+   InsertEmployeeDetails_URL,
+  InsertEmpBankDetails_URL,
+  InsertEmpEducationDetails_URL,
+  InsertEmpPreCompanyDetails_URL,
+    GetEntityList_URL,
+  GetBuList_URL,
+  Getprofile_URL,
+  Getpreviousweek_URL,
+  Getdateofbirth_URL,
+  Getdashboard_URL,
+  Getrolelist_URL,
+  GetEmployeeById_URL,
+  GetEmployeeEduById_url,
+  GetEmployeeBankById_URL,
+  GetEmployeePreCompById_URL,
+  GetEmployeeProfById_URL, 
+  Getrole_URL,
+  Getdownloadnoticefile_URL
 } from './const_url';
 
 @Injectable({
@@ -45,6 +65,7 @@ export class DbservicesService {
 
   constructor(private http: HttpClient) {}
 
+  // Removed duplicate APICall implementation
   // --- User ID ---
   setUserId(userId: string) {
     this.userId = userId;
@@ -172,6 +193,80 @@ getReimburseListApp(payload: any): Observable<any> {
 Getdashboardlist(payload: any): Observable<any> {
   return this.APICall(Getdashboardlisr_URL, payload); 
 }
+
+Getdashboardprojectlist(payload: any): Observable<any> {
+  return this.APICall(Getdashboardprojectwiselist_URL, payload); 
+}
+
+// --- Employee Master APIs ---
+InsertEmployeeDetails(payload: any): Observable<any> {
+  return this.APICall(InsertEmployeeDetails_URL, payload);
+}
+
+InsertEmpBankDetails(payload: any): Observable<any> {
+  return this.APICall(InsertEmpBankDetails_URL, payload);
+}
+
+InsertEmpEducationDetails(payload: any): Observable<any> {
+  return this.APICall(InsertEmpEducationDetails_URL, payload);
+}
+
+InsertEmpPreCompanyDetails(payload: any): Observable<any> {
+  return this.APICall(InsertEmpPreCompanyDetails_URL, payload);
+}
+
+Getdashboardleavelist(payload: any): Observable<any> {
+  return this.APICall(Getdashboardprojecleavelist_URL, payload); 
+}
+getEntityList(payload: any): Observable<any> {
+  return this.APICall(GetEntityList_URL, payload);
+}
+
+getBuList(payload: any): Observable<any> {
+  return this.APICall(GetBuList_URL, payload);
+}
+
+getprofile(payload: any): Observable<any> {
+  return this.APICall(Getprofile_URL, payload);
+}
+
+getpreviousweek(payload: any): Observable<any> {
+  return this.APICall(Getpreviousweek_URL, payload);
+}
+
+getdateofbirth(payload: any): Observable<any> {
+  return this.APICall(Getdateofbirth_URL, payload);   
+}
+
+  getdashboard(payload: any): Observable<any> {
+    return this.APICall(Getdashboard_URL, payload);
+  }
+
+  getrolelist(payload: any): Observable<any> {
+    return this.APICall(Getrolelist_URL, payload);
+  }
+
+  GetEmployeeById(payload: any): Observable<any> {
+    return this.APICall(GetEmployeeById_URL, payload);
+  }
+  GetEmployeeEduById(payload: any): Observable<any> {
+    return this.APICall(GetEmployeeEduById_url, payload);
+  }
+  GetEmployeeBankById(payload: any): Observable<any> {
+    return this.APICall(GetEmployeeBankById_URL, payload);
+  }
+  GetEmployeePreCompById(payload: any): Observable<any> {
+    return this.APICall(GetEmployeePreCompById_URL, payload);
+  }
+  GetEmployeeProfById(payload: any): Observable<any> {
+    return this.APICall(GetEmployeeProfById_URL, payload);
+  }
+  Getrole(payload: any): Observable<any> {
+    return this.APICall(Getrole_URL, payload);
+  }
+  Getdownloadnoticefile(payload: any): Observable<any> {
+    return this.APICall(Getdownloadnoticefile_URL, payload);
+  }
   // --- Generic POST call ---
   APICall(url: string, payload: any): Observable<any> {
     return this.http.post<any>(url, payload);

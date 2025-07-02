@@ -3,15 +3,25 @@
 
   <!-- 🔹 Search Section -->
   <div class="search-container">
-    <label for="searchInput" class="search-label">Search:</label>
-    <input id="searchInput" type="text" [(ngModel)]="searchQuery" 
-           (input)="filterTimesheets()" placeholder="Search timesheets..." 
-           class="search-input" />
-           <button *ngIf="searchQuery" class="clear-btn" (click)="clearSearch()">✖</button>
-           <button *ngIf="filteredTimesheets.length > 0 && !isLoading" (click)="exportToExcel()" class="download-btn">
-            Download Excel
-          </button>
-  </div>
+  <label for="searchInput" class="search-label">Search:</label>
+  <input id="searchInput" type="text" [(ngModel)]="searchQuery" 
+         (input)="filterTimesheets()" placeholder="Search timesheets..." 
+         class="search-input" />
+  <button *ngIf="searchQuery" class="clear-btn" (click)="clearSearch()">✖</button>
+
+  <!-- 🔹 From Date input -->
+  <label class="search-label">From:</label>
+  <input type="date" [(ngModel)]="fromDate" (change)="filterTimesheets()"/>
+
+  <!-- 🔹 To Date input -->
+  <label class="search-label">To:</label>
+  <input type="date" [(ngModel)]="toDate" (change)="filterTimesheets()"/>
+
+  <button *ngIf="filteredTimesheets.length > 0 && !isLoading" (click)="exportToExcel()" class="download-btn">
+    Download Excel
+  </button>
+</div>
+
 
 <!-- 🔹 Button remains at the top -->
 <!-- <div class="download-btn-container " *ngIf="filteredTimesheets.length > 0 && !isLoading">
@@ -35,7 +45,9 @@
     <div  class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  header-line  font-bold border-e-0 flex justify-center items-center  "> Approver</div>
     <div  class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  header-line  font-bold border-e-0 flex justify-center items-center  "> Remarks</div>
     <div  class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  header-line  font-bold border-e-0 flex justify-center items-center  "> Status</div>
-    <div  class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  header-line  font-bold  flex justify-center items-center  "> Action</div>
+    <!-- <div  class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  header-line  font-bold  flex justify-center items-center  "> Action</div> -->
+   <div  class="bg-[#3498DB] text-white p-1 text-[11px] xs:text-[3px] sm:text-[5px] lg:text[8px] md:text-[10px] xl:text-[13px] 2xl:text-[15px]  header-line  font-bold border-e-0 flex justify-center items-center  "> Manager Remarks</div>
+
     </div>
     </div>
 @if(paginatedTimesheets.length>0)
@@ -79,18 +91,21 @@
     <div class=" border-line p-1 text-[10px] md:text-[12px] lg:text-[14px] flex items-center remarks-column">
       {{ entry.Remarks }}
     </div>
+  
 
     <div class=" border-line p-1 text-[10px] md:text-[12px] lg:text-[14px]  flex justify-center items-center"
          [ngStyle]="{'color': getStatusColor(entry.Status)}">
       {{ entry.Status }}
     </div>
-
-    <div class=" border-line p-1 text-[10px] md:text-[12px] lg:text-[14px]  flex justify-center items-center">
+<div class="border-line p-1 text-[10px] md:text-[12px] lg:text-[14px] flex items-center">
+  {{ entry.ManagerRemarks }}
+</div>
+    <!-- <div class=" border-line p-1 text-[10px] md:text-[12px] lg:text-[14px]  flex justify-center items-center">
       <button *ngIf="entry.Status === 'Pending'" (click)="removeTimesheet(i)"
               class="bg-red-600 rounded text-white p-1" aria-label="Remove timesheet">
         Remove
       </button>
-    </div>
+    </div> -->
 
   </div>
 </div>

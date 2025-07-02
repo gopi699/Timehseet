@@ -1,3 +1,204 @@
+/* General Table Styles */
 table {
-    width: 100%;
-  }
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+table th,
+table td {
+  font-size: 13px;
+  vertical-align: middle;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+thead {
+  background-color: #e0f2fe; /* Light blue header */
+}
+
+/* Normalize table input fields */
+table input,
+table input[type='date'],
+table select {
+  width: 100%;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 30px !important;
+  font-size: 13px;
+  box-sizing: border-box;
+  line-height: normal;
+}
+
+/* Universal Input Field Styling */
+.input-field,
+input,
+select,
+textarea {
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px 8px;
+  height: 30px !important;
+  font-size: 13px;
+  width: 100%;
+  box-sizing: border-box;
+  line-height: normal;
+}
+
+/* Fixed size for fields inside grid layout */
+.grid input,
+.grid select,
+.grid textarea {
+  min-width: 220px;
+  max-width: 240px;
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  min-width: 80px;
+  height: 36px;
+  border: none;
+}
+
+button:hover {
+  transform: scale(1.03);
+}
+
+/* Add Button */
+button.bg-blue-500 {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Submit Button */
+button.bg-green-600 {
+  background-color: #28a745;
+  color: #fff;
+}
+
+/* Remove Button (Red Text + X Icon or Underline) */
+button.text-red-600,
+button.text-red-500 {
+  background: none;
+  border: none;
+  font-size: 16px;
+  padding: 0;
+  height: auto;
+  color: #f87171; /* Soft red */
+  text-decoration: none;
+}
+
+/* Step Tabs */
+.step-tabs-container {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  font-size: 13px;
+}
+
+.step-tab {
+  flex: 1 1 20%;
+  text-align: center;
+  padding: 0.4rem 0.5rem;
+  background-color: #f3f3f3;
+  color: #666;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  min-height: 32px;
+  font-size: 13px;
+}
+
+.step-tab::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -20px;
+  width: 0;
+  height: 0;
+  border-top: 24px solid transparent;
+  border-bottom: 24px solid transparent;
+  border-left: 20px solid #f3f3f3;
+  z-index: 1;
+}
+
+.step-tab.active {
+  background-color: #4b5563;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.step-tab.active::after {
+  border-left-color: #4b5563;
+}
+
+.step-tab.completed {
+  background-color: #9ca3af;
+  color: #ffffff;
+}
+
+.step-tab.completed::after {
+  border-left-color: #9ca3af;
+}
+
+.step-title {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.step-description {
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+/* Utility Classes */
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+.employee-dropdown {
+  width: auto;
+  min-width: 180px;
+  max-width: 240px;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mt-6 {
+  margin-top: 1.5rem;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}

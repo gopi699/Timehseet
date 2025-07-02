@@ -1,0 +1,75 @@
+.flex.items-center {
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+/* In your component stylesheet or global styles.css */
+
+.mat-form-field.big-input .mat-form-field-flex {
+  height: 60px; /* increase as needed */
+  align-items: center; /* vertically center */
+}
+
+.mat-form-field.big-input .mat-input-element {
+  font-size: 1.2rem; /* bigger text */
+  padding: 12px 0; /* vertical padding */
+}
+
+.mat-form-field.big-input .mat-form-field-infix {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.birthday-container {
+  width: 100%;
+}
+
+.heading {
+  font-weight: bold;
+  color: #6b21a8;
+  margin-bottom: 0.5rem;
+}
+
+.birthday-wrapper {
+  height: 200px; /* visible area height */
+  overflow: hidden;
+  position: relative;
+}
+
+.birthday-scroller {
+  display: flex;
+  flex-direction: column;
+  animation: scroll-up 15s linear infinite;
+}
+
+.birthday-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.birthday-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #9333ea;
+}
+
+.details .name {
+  font-weight: bold;
+  color: #6b21a8;
+}
+
+.details .date {
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+/* Keyframes to scroll entire duplicated height */
+@keyframes scroll-up {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}

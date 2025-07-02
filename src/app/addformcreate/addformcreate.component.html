@@ -1,5 +1,37 @@
 <div class="timesheet-container">
+  <h2 class="text-2xl font-bold text-gray-700">Weekdays</h2>
+
   <form [formGroup]="timesheetForm" (ngSubmit)="onSubmit()">
+
+    <!-- Week Info Buttons -->
+    <div class="week-navigation">
+      <button 
+  type="button"
+  class="nav-btn"
+  (click)="loadPreviousWeek()"
+  [disabled]="!canLoadPreviousWeek">
+  &lt; Previous
+</button>
+
+
+      <div class="week-number">
+        Week {{ weekNumber }}
+      </div>
+
+      <button 
+        type="button"
+        class="nav-btn"
+        (click)="loadCurrentWeek()"
+        [disabled]="!isViewingPreviousWeek">
+        Next &gt;
+      </button>
+    </div>
+
+    <!-- Instructions -->
+    <p class="instruction">
+      💡 Click on <b>S.No</b> to select rows. Use <kbd>Ctrl+C</kbd> to copy and <kbd>Ctrl+V</kbd> to paste into selected rows.
+    </p>
+
     <!-- Table Header -->
     <div class="table-header">
       <div class="header-row">
@@ -9,69 +41,153 @@
         <div class="header-cell date-col">Date</div>
         <div class="header-cell activity-col">Activity</div>
         <div class="header-cell hours-col">Work Hour</div>
-        <div class="header-cell approver-col">Approver</div>
         <div class="header-cell remarks-col">Remarks</div>
         <div class="header-cell action-col">Action</div>
       </div>
     </div>
+
     <!-- Table Body -->
     <div class="table-body" formArrayName="timesheet_Details">
-      <div class="body-row" *ngFor="let entry of timesheetEntries.controls; let i = index" [formGroupName]="i">
-        <div class="body-cell serial-col">{{ i + 1 }}</div>
-        
+      <div
+        class="body-row"
+        *ngFor="let entry of timesheetEntries.controls; let i = index"
+        [formGroupName]="i"
+        [ngClass]="{
+          selected: selectedCheckboxIndexes.has(i),
+          pasted: wasRowPasted(i)
+        }"
+      >
+        <!-- S.No -->
+        <div class="body-cell serial-col" (click)="toggleRowSelection(i)">
+          {{ i + 1 }}
+        </div>
+
+        <!-- Client -->
         <div class="body-cell client-col">
-          <select class="form-select" (change)="Fetch_Project(i)" formControlName="client_Pk_Id">
+          <select
+            class="form-select"
+            (change)="Fetch_Project(i)"
+            formControlName="client_Pk_Id"
+            [disabled]="entry.get('status')?.value?.toLowerCase() === 'approved'|| entry.get('status')?.value?.toLowerCase() === 'pending'"
+          >
             <option value="">--Select--</option>
             <option *ngFor="let client of clients" [value]="client.id">{{ client.description }}</option>
           </select>
         </div>
+
+        <!-- Project -->
         <div class="body-cell project-col">
-          <select class="form-select" formControlName="dep_Pk_Id">
+          <select
+            class="form-select"
+            formControlName="dep_Pk_Id"
+            [disabled]="entry.get('status')?.value?.toLowerCase() === 'approved'|| entry.get('status')?.value?.toLowerCase() === 'pending'"
+          >
             <option value="">--Select--</option>
             <option *ngFor="let project of projects[i]" [value]="project.id">{{ project.description }}</option>
           </select>
         </div>
+
+        <!-- Date -->
+        <!-- <div class="body-cell date-col">
+          <input
+            class="form-input"
+            formControlName="date"
+            
+            [disabled]="entry.get('status')?.value?.toLowerCase() === 'approved'"
+          />
+        </div> -->
         <div class="body-cell date-col">
-          <mat-form-field appearance="outline" class="date-picker">
-            <input matInput formControlName="date" 
-                   [matDatepicker]="picker" 
-                   [matDatepickerFilter]="myFilter"
-                   placeholder="Select Date">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-        </div>
-        
+  <mat-form-field appearance="outline" class="date-picker">
+    <input
+      matInput
+      formControlName="date"
+      [matDatepicker]="picker"
+      [matDatepickerFilter]="myFilter"
+      placeholder="M/DD/YYYY"
+      class="bg-blue-100 text-gray-800 rounded-md"
+      [disabled]="entry.get('status')?.value?.toLowerCase() === 'approved'|| entry.get('status')?.value?.toLowerCase() === 'pending'"
+    />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</div>
+
+
+
+        <!-- Activity -->
         <div class="body-cell activity-col">
-          <select class="form-select" formControlName="work_Pk_Id">
+          <select
+            class="form-select"
+            formControlName="work_Pk_Id"
+            [disabled]="entry.get('status')?.value?.toLowerCase() === 'approved'|| entry.get('status')?.value?.toLowerCase() === 'pending'"
+          >
             <option value="">--Select--</option>
             <option *ngFor="let activity of Activity" [value]="activity.id">{{ activity.description }}</option>
           </select>
         </div>
-        
+
+        <!-- Work Hour -->
         <div class="body-cell hours-col">
-          <input class="form-input" min="0" type="number" formControlName="work_Hour" />
+          <input
+            class="form-input"
+            type="number"
+            min="0"
+            formControlName="work_Hour"
+            [disabled]="entry.get('status')?.value?.toLowerCase() === 'approved'|| entry.get('status')?.value?.toLowerCase() === 'pending'"
+          />
         </div>
-        
-        <div class="body-cell approver-col">
-          <select class="form-select" formControlName="approved_By">
-            <option value="">--Select--</option>
-            <option *ngFor="let approver of Approver" [value]="approver.id">{{ approver.description }}</option>
-          </select>
-        </div>        
+
+        <!-- Remarks -->
         <div class="body-cell remarks-col">
-          <input class="form-input" type="text" formControlName="remarks" />
+          <input
+            class="form-input"
+            type="text"
+            formControlName="remarks"
+            [disabled]="entry.get('status')?.value?.toLowerCase() === 'approved'|| entry.get('status')?.value?.toLowerCase() === 'pending'"
+          />
         </div>
-        
-        <div class="body-cell action-col">
-          <button type="button" class="delete-btn" (click)="deleteRow(i)">✖</button>
-        </div>
+
+        <!-- Action (Delete Button) -->
+        <!-- Action (Delete & Reset Buttons) -->
+<div class="body-cell action-col">
+  <!-- ❌ Reset -->
+  <div class="delete-btn-container">
+    <button
+      type="button"
+      class="delete-btn"
+      matTooltip="Reset"
+      matTooltipPosition="above"
+      (click)="deleteRow(i)"
+      [disabled]="entry.get('status')?.value?.toLowerCase() === 'approved'">
+      ✖
+    </button>
+  </div>
+
+  <!-- 🗑️ Delete -->
+  <div class="delete-btn1-container mr-3">
+    <button
+      type="button"
+      class="delete-btn1"
+      matTooltip="Delete"
+      matTooltipPosition="above"
+      (click)="deleteRow1(i)"
+      [disabled]="entry.get('status')?.value?.toLowerCase() === 'approved'">
+      🗑️
+    </button>
+  </div>
+</div>
+
+
+
       </div>
-    </div>   
-    <!-- Buttons -->
+    </div>
+
+    <!-- Submit Button -->
     <div class="form-buttons">
       <button type="submit" class="submit-btn">Submit</button>
-      <button type="button" class="add-btn" (click)="addRow()">Add</button>
+      <button type="button" class="bg-[#2279d1] text-white px-5 py-2 rounded-md hover:bg-green-700" (click)="addRow()">Add</button>
+
     </div>
+
   </form>
 </div>

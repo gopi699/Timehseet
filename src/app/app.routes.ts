@@ -14,7 +14,7 @@ import { ReimburseApprovalComponent } from './reimburseapproval/reimburseapprova
 
 import { CanActivate, CanActivateChild, Router } from '@angular/router';
 import { AuthGuard } from './auth.guard';
-// import { EmployeeMasterComponent } from './employee-master/employee-master.component';
+ import { EmployeeMasterComponent } from './employee-master/employee-master.component';
 // import { ClientMasterComponent } from './client-master/client-master.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, // Fix redirect
@@ -33,9 +33,9 @@ export const routes: Routes = [
       {path: 'leaveapproval', component:LeaveapprovalComponent, canActivate:[AuthGuard]},
       {path: 'addreimburse',component:AddreimburseComponent, canActivate:[AuthGuard]},
       {path: 'viewreimburse',component:ViewreimburseComponent,canActivate:[AuthGuard]},
-      { path: 'reimburseapproval', component:ReimburseApprovalComponent, canActivate: [AuthGuard] }
+      { path: 'reimburseapproval', component:ReimburseApprovalComponent, canActivate: [AuthGuard] },
 
-      // {path: 'employee-Master',component:EmployeeMasterComponent,canActivate:[AuthGuard]},
+      {path: 'employee-Master',component:EmployeeMasterComponent,canActivate:[AuthGuard]}
       // {path: 'client-Master',component:ClientMasterComponent,canActivate:[AuthGuard]},
     ]
   }

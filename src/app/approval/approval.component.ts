@@ -49,6 +49,10 @@ export class ApprovalComponent implements OnInit {
   fromDate: any[] = [];
   toDate: any[] = [];
   status:any[] = [];
+ showRejectModal: boolean = false;
+rejectRemarks: string = '';
+timesheetsToReject: any[] = [];
+
 
   constructor(
     private dbservicesService: DbservicesService,
@@ -229,17 +233,27 @@ export class ApprovalComponent implements OnInit {
     };
     this.approveOrReject(payload);
   }
-
-  approveOrReject(payload: any): void {
-    this.dbservicesService.ApprovalUpdateStatus(payload).subscribe(
-      (response: any) => {
-        window.location.reload();
-      },
-      (error: any) => {
-        console.error('Failed to update Approval Status', error);
+approveOrReject(payload: any): void {
+  this.dbservicesService.ApprovalUpdateStatus(payload).subscribe({
+    next: (res) => {
+      if (res[0]?.statuscode === 200) {
+        Swal.fire('Success', res[0].description, 'success').then(() => {
+          // Instead of window.location.reload()
+          this.getSubmittedTimesheets();
+        });
+      } else {
+        Swal.fire('Error', res[0]?.description || 'Update failed', 'error');
       }
-    );
-  }
+    },
+    error: (err) => {
+      console.error('Failed to update Approval Status', err);
+      Swal.fire('Error', 'An error occurred while updating status.', 'error');
+    }
+  });
+}
+
+
+
 
   // toggleSelectAll(event: Event): void {
   //   const target = event.target as HTMLInputElement;
@@ -261,25 +275,21 @@ export class ApprovalComponent implements OnInit {
   }
   
 
-  approveEntry(timesheet: any): void {
-    timesheet.status = 'Approved';
-    timesheet.statusColor = 'green';
-    const payload = {
-      pk_Status_Id: 3,
-      approver_Timesheet: [{ pk_Timesheet_Details_Id: timesheet.pk_Timesheet_Details_Id }]
-    };
-    this.approveOrReject(payload);
-  }
+ approveEntry(timesheet: any): void {
+  const payload = {
+    pk_Status_Id: 3,
+    approver_Timesheet: [{ pk_Timesheet_Details_Id: timesheet.pk_Timesheet_Details_Id }]
+  };
+  this.approveOrReject(payload);
+}
 
-  rejectEntry(timesheet: any): void {
-    timesheet.status = 'Rejected';
-    timesheet.statusColor = 'red';
-    const payload = {
-      pk_Status_Id: 4,
-      approver_Timesheet: [{ pk_Timesheet_Details_Id: timesheet.pk_Timesheet_Details_Id }]
-    };
-    this.approveOrReject(payload);
-  }
+rejectEntry(timesheet: any): void {
+  this.timesheetsToReject = [timesheet.pk_Timesheet_Details_Id]; // single timesheet ID
+  this.rejectRemarks = '';
+  this.showRejectModal = true;
+}
+
+
 
   approveAll(): void {
     this.submittedTimesheets.forEach(timesheet => {
@@ -289,13 +299,21 @@ export class ApprovalComponent implements OnInit {
     });
   }
 
-  rejectAll(): void {
-    this.submittedTimesheets.forEach(timesheet => {
-      if (timesheet.selected) {
-        this.rejectEntry(timesheet);
-      }
-    });
+rejectAll(): void {
+  const selectedIds = this.submittedTimesheets
+    .filter(ts => ts.selected)
+    .map(ts => ts.pk_Timesheet_Details_Id);
+
+  if (selectedIds.length === 0) {
+    Swal.fire('No Selection', 'Please select at least one timesheet to reject.', 'warning');
+    return;
   }
+
+  this.timesheetsToReject = selectedIds;
+  this.rejectRemarks = '';
+  this.showRejectModal = true;
+}
+
 
   openApprovalForm(timesheet: any): void {
     this.selectedTimesheet = timesheet;
@@ -346,6 +364,44 @@ export class ApprovalComponent implements OnInit {
       }
     );
   }
+  confirmReject(): void {
+  if (!this.rejectRemarks || this.rejectRemarks.trim() === '') {
+    Swal.fire('Remarks Required', 'Please enter remarks for rejection.', 'warning');
+    return;
+  }
+
+  const payload = {
+    pk_Status_Id: 4, // Reject status
+    reject_Remarks: this.rejectRemarks,
+    approver_Timesheet: this.timesheetsToReject.map(id => ({
+      pk_Timesheet_Details_Id: id
+    }))
+  };
+
+  this.dbservicesService.ApprovalUpdateStatus(payload).subscribe({
+    next: (res) => {
+      if (res[0]?.statuscode === 200) {
+        Swal.fire('Rejected', res[0].description, 'success').then(() => {
+          this.getSubmittedTimesheets();
+          this.cancelReject();
+        });
+      } else {
+        Swal.fire('Error', res[0]?.description || 'Reject failed', 'error');
+      }
+    },
+    error: (err) => {
+      console.error('Failed to reject timesheets', err);
+      Swal.fire('Error', 'An error occurred while rejecting timesheets.', 'error');
+    }
+  });
+}
+
+cancelReject(): void {
+  this.showRejectModal = false;
+  this.rejectRemarks = '';
+  this.timesheetsToReject = [];
+}
+
   exportToExcel() {
         if (this.paginatedTimesheets.length === 0) {
           alert('No records available to export');

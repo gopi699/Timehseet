@@ -1,4 +1,19 @@
-@import "tailwindcss";
+/* @import "tailwindcss"; */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+      display: none;
+  }
+ /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+}
+}
 
 body {
   background-color: #f0f4f8;
@@ -22,15 +37,13 @@ body {
   align-items: baseline;
   box-sizing: border-box;
   width: 100%;
-  height: 33px !important;
+  /* height: 33px !important; */
 }
 
-.mat-mdc-text-field-wrapper {
-  height: 33px !important;
-}
+
 
 .mat-mdc-form-field-icon-suffix {
-  height: 33px;
+  /* height: 33px; */
   display: flex;
   align-items: center;
 }
